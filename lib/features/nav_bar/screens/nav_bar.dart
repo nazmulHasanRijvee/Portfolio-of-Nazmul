@@ -26,7 +26,8 @@ class NavBar extends StatelessWidget {
 
           }
 
-           return DesktopNavBar(onNavTap: onPressed, keys: keys);
+          /// TODO: Work on mobile nav bar
+          return DesktopNavBar(onNavTap: onPressed, keys: keys);
 
         }
     );
