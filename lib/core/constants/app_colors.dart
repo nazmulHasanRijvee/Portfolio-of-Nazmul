@@ -10,6 +10,6 @@ class AppColors {
   //static const textSecondary = Color(0xFF8892A4);
 
   static const primaryColor = Color(0xFF508FF8);
-  static const textSecondary = Color(0xFF001A40); // #001A40
-  static const filledButtonColor = Color(0xFF005BBF);
+  static const textSecondary = Color(0xFF002F68); // #001A40 // #002F68
+  static const filledButtonColor = Color(0xFF2F75DC); // #2F75DC 005BBF // #2F75DC
 }
