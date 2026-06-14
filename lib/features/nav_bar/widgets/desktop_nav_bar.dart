@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_text_styles.dart';
 
-class DesktopNavBar extends StatelessWidget {
+class DesktopNavBar extends StatefulWidget {
 
   final ValueChanged<GlobalKey> onNavTap;
   final Map<String, GlobalKey> keys;
@@ -11,7 +12,17 @@ class DesktopNavBar extends StatelessWidget {
   const DesktopNavBar({super.key, required this.onNavTap, required this.keys});
 
   @override
+  State<DesktopNavBar> createState() => _DesktopNavBarState();
+}
+
+class _DesktopNavBarState extends State<DesktopNavBar> {
+
+  final ValueNotifier<int> _current = ValueNotifier(0);
+  static const List<String> navItems = ['Hero', 'About', 'Skills', 'Projects', 'Contact'];
+
+  @override
   Widget build(BuildContext context) {
+
 
     return Container(
       height: 60,
@@ -24,6 +35,7 @@ class DesktopNavBar extends StatelessWidget {
       ),
 
       child: Row(
+        mainAxisAlignment: .spaceBetween,
         children: [
           // Logo
           const Text(
@@ -35,40 +47,76 @@ class DesktopNavBar extends StatelessWidget {
             ),
           ),
 
-          const Spacer(),
 
           // Nav links — each calls onNavTap with its specific key
-          _NavLink(
-            label: 'Hero',
-            onTap: () => onNavTap(keys['hero']!),
-          ),
-          _NavLink(
-            label: 'About',
-            onTap: () => onNavTap(keys['about']!),
-          ),
-          _NavLink(
-            label: 'Skills',
-            onTap: () => onNavTap(keys['skills']!),
-          ),
-          _NavLink(
-            label: 'Projects',
-            onTap: () => onNavTap(keys['projects']!),
-          ),
-          _NavLink(
-            label: 'Contact',
-            onTap: () => onNavTap(keys['contact']!),
+          // _NavLink(
+          //   label: 'Hero',
+          //   onTap: () => widget.onNavTap(widget.keys['hero']!),
+          // ),
+          // _NavLink(
+          //   label: 'About',
+          //   onTap: () => widget.onNavTap(widget.keys['about']!),
+          // ),
+          // _NavLink(
+          //   label: 'Skills',
+          //   onTap: () => widget.onNavTap(widget.keys['skills']!),
+          // ),
+          // _NavLink(
+          //   label: 'Projects',
+          //   onTap: () => widget.onNavTap(widget.keys['projects']!),
+          // ),
+          // _NavLink(
+          //   label: 'Contact',
+          //   onTap: () => widget.onNavTap(widget.keys['contact']!),
+          // ),
+
+          const SizedBox(width: 1),
+
+          ListView.builder(
+            itemCount: navItems.length,
+            padding: EdgeInsets.only(
+                top: 20,
+                bottom: 0
+            ),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+
+            itemBuilder: (BuildContext context, int index) {
+
+              return ValueListenableBuilder(
+                valueListenable: _current,
+                builder: (BuildContext context, int value, child) {
+                  return _NavLink(
+                      label: navItems[index],
+                      isSelected: value == index,
+                      onTap: () {
+                        _current.value = index;
+                        widget.onNavTap(widget.keys[navItems[index].toLowerCase()]!);
+                      }
+                  );
+                }
+              );
+
+            },
+
           ),
 
-          const SizedBox(width: 32),
+          //const SizedBox(width: 300),
 
           // Resume button
-          OutlinedButton(
+          FilledButton(
             onPressed: () {}, // url_launcher later
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppColors.accent),
-              foregroundColor: AppColors.accent,
+            style: FilledButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              backgroundColor: AppColors.filledButtonColor,
             ),
-            child: const Text('Download Resume'),
+            child: Text(
+                'Download Resume',
+              style: AppTextStyles.resumeButton,
+            ),
           ),
         ],
       ),
@@ -76,15 +124,15 @@ class DesktopNavBar extends StatelessWidget {
     );
 
   }
-
 }
 
 // Small reusable nav link widget
 class _NavLink extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
+  final bool isSelected;
 
-  const _NavLink({required this.label, required this.onTap});
+  const _NavLink({required this.label, required this.onTap, required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -92,14 +140,50 @@ class _NavLink extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
         onTap: onTap,
-        child: Text(
-          label,
-          style: const TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 14,
-          ),
+        child: Column(
+          mainAxisSize: .min,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.primaryColor,
+                fontSize: 14,
+                fontWeight: .bold
+              ),
+            ),
+            const SizedBox(height: 5),
+            if(isSelected)
+              Container(
+                height: 3,
+                width: getWidth(label.length) , // 35
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              )
+          ],
         ),
       ),
     );
+  }
+
+  double getWidth(int labelLength){
+
+    switch(labelLength){
+
+      case 4:
+        return 35;
+      case 5:
+        return 40;
+      case 6:
+        return 38;
+      case 7:
+        return 50;
+      case 8:
+        return 54;
+      default:
+        return 35;
+    }
+
   }
 }

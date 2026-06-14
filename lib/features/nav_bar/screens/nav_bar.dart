@@ -20,14 +20,21 @@ class NavBar extends StatelessWidget {
     return LayoutBuilder(
         builder: (context, constraints){
 
-          if(constraints.maxWidth >= AppBreakpoints.tablet){
+          final width = constraints.maxWidth;
 
+          if(width < AppBreakpoints.mobile){
+            // for mobile
+            return DesktopNavBar(onNavTap: onPressed, keys: keys);
+
+          } else if (width < AppBreakpoints.tablet){
+            // for tablet
+            return DesktopNavBar(onNavTap: onPressed, keys: keys);
+
+          } else {
+            // for desktop
             return DesktopNavBar(onNavTap: onPressed, keys: keys);
 
           }
-
-          /// TODO: Work on mobile nav bar
-          return DesktopNavBar(onNavTap: onPressed, keys: keys);
 
         }
     );
