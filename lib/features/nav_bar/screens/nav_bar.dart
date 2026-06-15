@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
 import 'package:flutter7_portfolio/features/nav_bar/widgets/desktop_nav_bar.dart';
 
+import '../widgets/mobile_nav_bar.dart';
 import '../widgets/tablet_nav_bar.dart';
 
 class NavBar extends StatelessWidget {
@@ -26,7 +27,7 @@ class NavBar extends StatelessWidget {
 
           if(width < AppBreakpoints.mobile){
             // for mobile
-            return DesktopNavBar(onNavTap: onPressed, keys: keys);
+            return MobileNavBar(onNavTap: onPressed, keys: keys);
 
           } else if (width < AppBreakpoints.tablet){
             // for tablet

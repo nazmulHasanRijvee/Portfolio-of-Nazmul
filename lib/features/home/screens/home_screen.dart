@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter7_portfolio/core/extensions/media_query_extension.dart';
+import 'package:flutter7_portfolio/features/home/widgets/hero_section.dart';
 
 import '../../../core/constants/app_text_styles.dart';
 import '../../nav_bar/screens/nav_bar.dart';
+import '../widgets/background.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -47,9 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return Background(
 
-      body: Column(
+      child: Column(
 
         children: [
 
@@ -70,18 +73,19 @@ class _HomeScreenState extends State<HomeScreen> {
               controller: _scrollController,
 
               child: SizedBox(
-                width: double.infinity,
+                width: context.sizeOf.width,
                 child: Column(
 
                   children: [
 
                     const SizedBox(height: 150),
 
-                    Text(
-                    'Hero section',
-                      key: _heroKey,
-                      style: AppTextStyles.testStyle,
-                    ),
+                    // Text(
+                    // 'Hero section',
+                    //   key: _heroKey,
+                    //   style: AppTextStyles.testStyle,
+                    // ),
+                    HeroSection(heroKey: _heroKey),
 
                     const SizedBox(height: 150),
 

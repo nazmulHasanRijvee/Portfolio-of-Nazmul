@@ -18,8 +18,21 @@ class DesktopNavBar extends StatefulWidget {
 
 class _DesktopNavBarState extends State<DesktopNavBar> {
 
-  final ValueNotifier<int> _current = ValueNotifier(0);
+  late final ValueNotifier<int> _current;
   static const List<String> navItems = ['Hero', 'About', 'Skills', 'Projects', 'Contact'];
+
+
+  @override
+  void initState() {
+    super.initState();
+    _current = ValueNotifier(0);
+  }
+
+  @override
+  void dispose() {
+    _current.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +44,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
       decoration: BoxDecoration(
         color: AppColors.background.withValues(alpha: 0.95),
         border: Border(
-          bottom: BorderSide(color: AppColors.border, width: 1),
+          bottom: BorderSide(color: AppColors.border, width: 0.8),
         ),
       ),
 

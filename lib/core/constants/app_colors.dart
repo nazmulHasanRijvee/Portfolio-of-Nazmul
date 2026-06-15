@@ -9,7 +9,8 @@ class AppColors {
   static const white = Color(0xFFFFFFFF);
   //static const textSecondary = Color(0xFF8892A4);
 
-  static const primaryColor = Color(0xFF508FF8);
+  static const primaryColor = Color(0xFF7FABFF); // #7FABFF // 508FF8
   static const textSecondary = Color(0xFF002F68); // #001A40 // #002F68
   static const filledButtonColor = Color(0xFF2F75DC); // #2F75DC 005BBF // #2F75DC
+  static const activeContainer = Color(0xFF2F2F40);
 }
