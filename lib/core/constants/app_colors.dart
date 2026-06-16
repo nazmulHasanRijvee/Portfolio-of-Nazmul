@@ -13,4 +13,6 @@ class AppColors {
   static const textSecondary = Color(0xFF002F68); // #001A40 // #002F68
   static const filledButtonColor = Color(0xFF2F75DC); // #2F75DC 005BBF // #2F75DC
   static const activeContainer = Color(0xFF2F2F40);
+
+  static const floatingBadge = Color(0xFF191C22);
 }

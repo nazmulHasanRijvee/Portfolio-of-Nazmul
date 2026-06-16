@@ -47,4 +47,10 @@ class AppTextStyles {
     fontWeight: .w300,
   );
 
+  /// Hero section
+  static TextStyle get badgeStyle => TextStyle(
+    color: Colors.white,
+    fontSize: 12
+  );
+
 }
