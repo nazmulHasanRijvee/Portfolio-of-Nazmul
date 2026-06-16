@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/extensions/media_query_extension.dart';
 import 'package:flutter7_portfolio/features/home/widgets/hero_section.dart';
 
+import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../nav_bar/screens/nav_bar.dart';
 import '../widgets/background.dart';
@@ -78,14 +79,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   children: [
 
-                    const SizedBox(height: 150),
+                    LayoutBuilder(
+                      builder: (BuildContext context, constraints) {
+                        final double width = constraints.maxWidth;
+                        if(width < AppBreakpoints.mobile) {
+                          return const SizedBox(height: 30);
+                        } else if (width < AppBreakpoints.tablet) {
+                          return const SizedBox(height: 100);
+                        }
+                        return const SizedBox(height: 150);
+                      }
+                    ),
 
                     // Text(
                     // 'Hero section',
                     //   key: _heroKey,
                     //   style: AppTextStyles.testStyle,
                     // ),
-                    HeroSection(heroKey: _heroKey),
+                    HeroSection(key: _heroKey),
 
                     const SizedBox(height: 150),
 
