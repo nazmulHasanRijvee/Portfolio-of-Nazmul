@@ -63,7 +63,7 @@ class AppTextStyles {
   static TextStyle get aboutPrecisionStyle => TextStyle(
     color: Colors.white,
     fontWeight: .w700,
-    fontSize: 24
+    fontSize: 28
   );
   static TextStyle get aboutDescriptionStyle => TextStyle(
     color: Colors.white70,

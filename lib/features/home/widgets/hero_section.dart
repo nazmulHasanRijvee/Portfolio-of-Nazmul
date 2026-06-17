@@ -82,7 +82,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
           } else if (width < 712) {
             return buildMiddleLayout(width);
           } else if (width < AppBreakpoints.tablet) {
-            return buildDesktopLayout(width);
+            return buildTabletLayout(width);
           } else {
             return buildDesktopLayout(width);
           }

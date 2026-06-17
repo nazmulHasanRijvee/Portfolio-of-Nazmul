@@ -17,25 +17,19 @@ class AboutSection extends StatefulWidget {
 
 class _AboutSectionState extends State<AboutSection> with SingleTickerProviderStateMixin {
 
-  late final AnimationController _controller;
-  late final Animation<double> _fadeAnimation;
+  late final ValueNotifier<bool> _isHover;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut
-      )
-    );
-    _controller.repeat(reverse: true);
+
+    _isHover = ValueNotifier(false);
+
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _isHover.dispose();
     super.dispose();
   }
 
@@ -48,10 +42,10 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
           final width = constraints.maxWidth;
           if(width < AppBreakpoints.mobile) {
             return buildMobileLayout(width);
-          } else if (width < 712) {
+          } else if (width <= 1023) {
             return buildMiddleLayout(width);
           } else if (width < AppBreakpoints.tablet) {
-            return buildDesktopLayout(width);
+            return buildTabletLayout(width);
           } else {
             return buildDesktopLayout(width);
           }
@@ -70,88 +64,18 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
         crossAxisAlignment: .start,
         mainAxisSize: .min,
         children: [
-          Text(
-            AppStrings.aboutMe,
-            style: AppTextStyles.aboutMeStyle
-                .copyWith(fontSize: 14 * ratio),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            AppStrings.aboutPrecision,
-            style: AppTextStyles.aboutPrecisionStyle
-                .copyWith(fontSize: 24 * ratio),
-          ),
-          const SizedBox(height: 40),
+          // unpacking list using spread operator
+          ...buildHeader(ratio, false),
+          const SizedBox(height: 60),
           Row(
             children: [
-              Stack(
-                children: [
-                  FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: Container(
-                      width: 500 * ratio,
-                      height: 519.28 * ratio,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primaryColor.withValues(alpha: 0.3),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset.fromDirection(3, 3), // changes position of shadow
-                          ),
-                        ]
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      clipBehavior: .antiAliasWithSaveLayer,
-                      child: SvgPicture.asset(
-                        AssetPaths.about,
-                        fit: .cover,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              buildAboutImage(ratio),
               const Spacer(
                 flex: 1,
               ),
               Expanded(
                 flex: 9,
-                child: Column(
-                  mainAxisSize: .min,
-                  mainAxisAlignment: .center,
-                  children: [
-                    SizedBox(
-                      width: 670 * ratio,
-                      child: Text(
-                        AppStrings.aboutDescription,
-                        style: AppTextStyles.aboutDescriptionStyle
-                            .copyWith(fontSize: 20 * ratio),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    SizedBox(
-                      height: 120 * ratio, // edge case
-                      child: ListView.separated(
-                        padding: .zero,
-                        shrinkWrap: true,
-                        scrollDirection: .horizontal,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: AboutSectionModel.aboutData.length,
-                        itemBuilder: (BuildContext context, int index) {
-
-                          final model = AboutSectionModel.aboutData[index];
-
-                          return buildAboutContainer(ratio, model);
-                        },
-                        separatorBuilder: (context, index) => SizedBox(width: 50 * ratio),
-                      ),
-                    )
-                  ],
-                ),
+                child: buildAboutDescription(ratio, false),
               ),
             ],
 
@@ -164,29 +88,190 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
 
   Widget buildTabletLayout(double width) {
 
-    return SizedBox();
+    final double ratio = (width / AppBreakpoints.tablet).clamp(0.5, 1.0);
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40 * ratio),
+      child: Column(
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
+        children: [
+          // unpacking list using spread operator
+          ...buildHeader(ratio, false),
+          const SizedBox(height: 40),
+          Row(
+            children: [
+              buildAboutImage(ratio),
+              const Spacer(
+                flex: 1,
+              ),
+              Expanded(
+                flex: 9,
+                child: buildAboutDescription(ratio, false),
+              ),
+            ],
+
+          ),
+        ],
+      ),
+    );
 
   }
 
 
   Widget buildMiddleLayout(double width) {
 
-    return SizedBox();
+    final double ratio = (width / (AppBreakpoints.tablet * 1.2)).clamp(0.5, 1.0);
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 30 * ratio),
+      child: Column(
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
+        children: [
+          // unpacking list using spread operator
+          ...buildHeader(ratio, false),
+          const SizedBox(height: 40),
+          Row(
+            children: [
+              buildAboutImage(ratio),
+              const Spacer(
+                flex: 1,
+              ),
+              Expanded(
+                flex: 9,
+                child: buildAboutDescription(ratio, true),
+              ),
+            ],
+
+          ),
+        ],
+      ),
+    );
 
   }
 
   Widget buildMobileLayout(double width) {
 
-    return SizedBox();
+    final double ratio = (width / AppBreakpoints.mobile).clamp(0.5, 1.0);
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24 * ratio),
+      child: Column(
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
+        children: [
+          // unpacking list using spread operator
+          ...buildHeader(ratio, true),
+          const SizedBox(height: 60),
+          Align(
+            alignment: .center,
+              child: buildAboutImage(ratio)),
+          const SizedBox(height: 32),
+          buildAboutDescriptionForMobile(ratio),
+        ],
+      ),
+    );
 
   }
 
-  Widget buildAboutContainer(double ratio, AboutSectionEntity model) {
+  Column buildAboutDescription(double ratio, bool isMiddle) {
+    return Column(
+      mainAxisSize: .min,
+      mainAxisAlignment: .center,
+      children: [
+        buildDescriptionText(ratio, false),
+        const SizedBox(height: 40),
+        SizedBox(
+          height: 120 * ratio, // edge case
+          child: ListView.separated(
+            clipBehavior: .antiAliasWithSaveLayer,
+            padding: .zero,
+            shrinkWrap: true,
+            scrollDirection: .horizontal,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: AboutSectionModel.aboutData.length,
+            itemBuilder: (BuildContext context, int index) {
+
+              final model = AboutSectionModel.aboutData[index];
+
+              return buildAboutContainer(ratio, model, false);
+            },
+            separatorBuilder: (context, index) =>
+                SizedBox(width: isMiddle ? 10 * ratio: 50 * ratio),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget buildDescriptionText(double ratio, bool isMobile) {
+    return SizedBox(
+      width: isMobile ? double.infinity * ratio : 670 * ratio,
+      child: Text(
+        AppStrings.aboutDescription,
+        style: AppTextStyles.aboutDescriptionStyle
+            .copyWith(fontSize: isMobile ? 24 * ratio : 20 * ratio),
+      ),
+    );
+  }
+
+  Widget buildAboutImage(double ratio) {
+    return MouseRegion(
+      onHover: (event) {
+        _isHover.value = true;
+        //_controller.forward();
+        },
+      onExit: (event) {
+        _isHover.value = false;
+        //_controller.stop();
+      },
+      child: Stack(
+        children: [
+          ValueListenableBuilder(
+            valueListenable: _isHover,
+            builder: (BuildContext context, bool value, child) {
+              return Container(
+                width: 500 * ratio,
+                height: 519.28 * ratio,
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      if(_isHover.value)
+                        BoxShadow(
+                          color: AppColors.primaryColor.withValues(alpha: 0.3),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset.fromDirection(3, 3), // changes position of shadow
+                        ),
+                    ]
+                ),
+              );
+            }
+          ),
+          Positioned.fill(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              clipBehavior: .antiAliasWithSaveLayer,
+              child: SvgPicture.asset(
+                AssetPaths.about,
+                fit: .cover,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildAboutContainer(double ratio, AboutSectionEntity model, bool isMiddle) {
 
     return Container(
-      padding: .only(left: 40 * ratio, top: 30 * ratio),
-      height: 120 * ratio,
-      width: 190 * ratio,
+      padding: .only(
+          left: isMiddle ? 15 * ratio : 40 * ratio, // 15 old
+          top: isMiddle ? 20 * ratio : 30 * ratio,
+      ),
+      height: isMiddle? 110 * ratio : 120 * ratio,
+      width: isMiddle ? 40 * ratio : 190 * ratio, // 40 old
       decoration: BoxDecoration(
         color: AppColors.aboutContainer,
         borderRadius: BorderRadiusGeometry.circular(8),
@@ -202,7 +287,9 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
           Text(
             model.title,
             style: AppTextStyles.aboutContainerTitleStyle
-                .copyWith(fontSize: 24 * ratio),
+                .copyWith(
+                fontSize: 24 * ratio
+            ),
           ),
           SizedBox(height: 10 * ratio),
           Text(
@@ -211,6 +298,89 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
                 .copyWith(fontSize: 16 * ratio),
           )
         ]
+      ),
+    );
+
+  }
+
+  List<Widget> buildHeader(double ratio, bool isMobile) {
+
+    return  [
+        Text(
+          AppStrings.aboutMe,
+          style: AppTextStyles.aboutMeStyle
+              .copyWith(fontSize: isMobile ? 20 * ratio : 14 * ratio),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          AppStrings.aboutPrecision,
+          style: AppTextStyles.aboutPrecisionStyle
+              .copyWith(fontSize: isMobile ? 34 * ratio : 28 * ratio),
+        ),
+      ];
+
+  }
+
+  Column buildAboutDescriptionForMobile(double ratio) {
+    return Column(
+      mainAxisSize: .min,
+      mainAxisAlignment: .center,
+      children: [
+        buildDescriptionText(ratio, true),
+        const SizedBox(height: 40),
+        Row(
+            mainAxisAlignment: .spaceAround,
+            spacing: 4 * ratio,
+            children: List.generate(
+          AboutSectionModel.aboutData.length,
+          (int index) {
+
+            final model = AboutSectionModel.aboutData[index];
+
+            return buildAboutContainerForMobile(ratio, model);
+          },
+          )
+        )
+      ],
+    );
+  }
+
+  Widget buildAboutContainerForMobile(double ratio, AboutSectionEntity model) {
+
+    return Container(
+      padding: .only(
+        left: 30 * ratio, // 15 old
+        top:  40 * ratio,
+      ),
+      margin: .symmetric(horizontal: 10),
+      height: 160 * ratio,
+      width:  150 * ratio, // 40 old
+      decoration: BoxDecoration(
+          color: AppColors.aboutContainer,
+          borderRadius: BorderRadiusGeometry.circular(8),
+          border: BoxBorder.all(
+              color: AppColors.border, // Control border color
+              width: 0.5
+          )
+      ),
+      child:  Column(
+          crossAxisAlignment: .start,
+          mainAxisSize: .min,
+          children: [
+            Text(
+              model.title,
+              style: AppTextStyles.aboutContainerTitleStyle
+                  .copyWith(
+                  fontSize: 28 * ratio
+              ),
+            ),
+            SizedBox(height: 16 * ratio),
+            Text(
+              model.subTitle,
+              style: AppTextStyles.aboutContainerSubTitleStyle
+                  .copyWith(fontSize: 20 * ratio),
+            )
+          ]
       ),
     );
 
