@@ -53,4 +53,32 @@ class AppTextStyles {
     fontSize: 12
   );
 
+
+  /// About section
+  static TextStyle get aboutMeStyle => TextStyle(
+    color: AppColors.primaryColor,
+    fontWeight: .w600,
+    fontSize: 14
+  );
+  static TextStyle get aboutPrecisionStyle => TextStyle(
+    color: Colors.white,
+    fontWeight: .w700,
+    fontSize: 24
+  );
+  static TextStyle get aboutDescriptionStyle => TextStyle(
+    color: Colors.white70,
+    fontWeight: .w400,
+    fontSize: 20
+  );
+  static TextStyle get aboutContainerTitleStyle => TextStyle(
+    color: AppColors.primaryColor,
+    fontWeight: .w700,
+    fontSize: 24
+  );
+  static TextStyle get aboutContainerSubTitleStyle => TextStyle(
+      color: Colors.white70,
+      fontWeight: .w600,
+      fontSize: 16
+  );
+
 }

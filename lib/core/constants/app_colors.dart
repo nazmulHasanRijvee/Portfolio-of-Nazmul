@@ -15,4 +15,7 @@ class AppColors {
   static const activeContainer = Color(0xFF2F2F40);
 
   static const floatingBadge = Color(0xFF191C22);
+
+  /// about section
+  static const aboutContainer = Color(0xFF2F2F40);
 }

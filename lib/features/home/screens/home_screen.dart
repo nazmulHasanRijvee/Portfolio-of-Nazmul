@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/extensions/media_query_extension.dart';
+import 'package:flutter7_portfolio/features/home/widgets/about_section.dart';
 import 'package:flutter7_portfolio/features/home/widgets/hero_section.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
@@ -85,26 +86,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         if(width < AppBreakpoints.mobile) {
                           return const SizedBox(height: 30);
                         } else if (width < AppBreakpoints.tablet) {
-                          return const SizedBox(height: 100);
+                          return const SizedBox(height: 130);
                         }
                         return const SizedBox(height: 150);
                       }
                     ),
 
-                    // Text(
-                    // 'Hero section',
-                    //   key: _heroKey,
-                    //   style: AppTextStyles.testStyle,
-                    // ),
                     HeroSection(key: _heroKey),
 
                     const SizedBox(height: 150),
 
-                    Text(
-                        'About Section',
-                      key: _aboutKey,
-                      style: AppTextStyles.testStyle,
-                    ),
+                    // Text(
+                    //     'About Section',
+                    //   key: _aboutKey,
+                    //   style: AppTextStyles.testStyle,
+                    // ),
+                    AboutSection(key: _aboutKey),
 
                     const SizedBox(height: 150),
 

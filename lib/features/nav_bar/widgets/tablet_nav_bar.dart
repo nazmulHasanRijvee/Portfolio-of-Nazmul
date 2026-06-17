@@ -4,6 +4,7 @@ import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/extensions/media_query_extension.dart';
+import '../../../data/models/nav_bar_model.dart';
 
 class TabletNavBar extends StatefulWidget {
 
@@ -20,7 +21,6 @@ class TabletNavBar extends StatefulWidget {
 class _TabletNavBarState extends State<TabletNavBar> {
 
   late final ValueNotifier<int> _current;
-  static const List<String> navItems = ['Hero', 'About', 'Skills', 'Projects', 'Contact'];
 
   @override
   void initState() {
@@ -98,7 +98,7 @@ class _TabletNavBarState extends State<TabletNavBar> {
 
   ListView buildListView() {
     return ListView.builder(
-        itemCount: navItems.length,
+        itemCount: NavBarModel.navItems.length,
         padding: EdgeInsets.only(
             top: 20,
             bottom: 0,
@@ -111,15 +111,17 @@ class _TabletNavBarState extends State<TabletNavBar> {
 
         itemBuilder: (BuildContext context, int index) {
 
+          final String navItem = NavBarModel.navItems[index];
+
           return ValueListenableBuilder(
               valueListenable: _current,
               builder: (BuildContext context, int value, child) {
                 return _NavLink(
-                    label: navItems[index],
+                    label: navItem,
                     isSelected: value == index,
                     onTap: () {
                       _current.value = index;
-                      widget.onNavTap(widget.keys[navItems[index].toLowerCase()]!);
+                      widget.onNavTap(widget.keys[navItem.toLowerCase()]!);
                     }
                 );
               }

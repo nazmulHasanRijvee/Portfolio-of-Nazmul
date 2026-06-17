@@ -60,6 +60,9 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
 
   @override
   void dispose() {
+
+    _fadeController.dispose();
+
     for(final c in _controllers){
       c.dispose();
     }

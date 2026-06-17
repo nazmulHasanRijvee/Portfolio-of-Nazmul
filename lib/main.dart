@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'NazmulDev',
       theme: AppTheme.theme,
       debugShowCheckedModeBanner: false,
       //initialRoute: HomeScreen.routeName,
