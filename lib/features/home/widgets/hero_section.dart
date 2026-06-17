@@ -19,7 +19,9 @@ class HeroSection extends StatefulWidget {
 class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin {
 
   late final List<AnimationController> _controllers;
+  late final AnimationController _fadeController;
   late final List<Animation<double>> _animations;
+  late final Animation<double> _fadeAnimation;
 
   @override
   void initState() {
@@ -40,6 +42,16 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
         ).animate(CurvedAnimation(parent: e, curve: Curves.easeInOut))
     ).toList();
 
+    _fadeController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
+
+    _fadeAnimation = Tween<double>(begin: 0.35, end: 1)
+        .animate(CurvedAnimation(
+        parent: _fadeController, curve: Curves.easeInOut
+        )
+    );
+
+    _fadeController.repeat(reverse: true);
+
     for(final c in _controllers){
      c.repeat(reverse: true);
     }
@@ -58,9 +70,8 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
 
-
     return LayoutBuilder(
-        builder: (BuildContext context, constraints) {
+        builder: (BuildContext context, BoxConstraints constraints) {
 
           final width = constraints.maxWidth;
           if(width < AppBreakpoints.mobile) {
@@ -83,7 +94,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     final ratio = (width / AppBreakpoints.desktop).clamp(0.5, 1.0);
 
     return Padding(
-    padding: EdgeInsets.symmetric(horizontal: (60.0 * ratio)), // ration added
+    padding: EdgeInsets.symmetric(horizontal: (60.0 * ratio)), // ratio added
     child: Row(
 
       children: [
@@ -95,7 +106,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
         Expanded(
           flex: 4,
           child: buildPhotoStack(ratio, false),
-        )
+        ),
       ],
     ),
     );
@@ -400,12 +411,14 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
           ),
           child: Row(
             children: [
-              Container(
-                width: 7,
-                height: 7,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green
+              buildFadeTransition(
+                Container(
+                  width: 7,
+                  height: 7,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -416,6 +429,15 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
             ],
           )
       );
+  }
+
+  Widget buildFadeTransition(Widget child){
+
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: child,
+    );
+
   }
 
 }
