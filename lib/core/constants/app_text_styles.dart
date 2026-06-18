@@ -89,7 +89,7 @@ class AppTextStyles {
   );
   static TextStyle get subSkillStyle => TextStyle(
       color: Colors.white70,
-      fontWeight: .w500,
+      fontWeight: .w600,
       fontSize: 16
   );
 

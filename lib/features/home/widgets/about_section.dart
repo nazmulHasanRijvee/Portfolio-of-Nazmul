@@ -224,7 +224,7 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
 
   Widget buildAboutImage(double ratio) {
     return MouseRegion(
-      onHover: (event) {
+      onEnter: (event) {
         _isHover.value = true;
         //_controller.forward();
         },

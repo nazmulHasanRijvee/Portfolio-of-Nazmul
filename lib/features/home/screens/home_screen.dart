@@ -8,6 +8,7 @@ import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../nav_bar/screens/nav_bar.dart';
 import '../widgets/background.dart';
+import '../widgets/project_section.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -101,20 +102,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 150),
 
-                    // Text(
-                    //   'Skills Section',
-                    //   key: _skillsKey,
-                    //   style: AppTextStyles.testStyle,
-                    // ),
                     SkillSection(key: _skillsKey),
 
                     const SizedBox(height: 150),
 
-                    Text(
-                        'Projects Section',
-                      key: _projectsKey,
-                      style: AppTextStyles.testStyle,
-                    ),
+                    // Text(
+                    //     'Projects Section',
+                    //   key: _projectsKey,
+                    //   style: AppTextStyles.testStyle,
+                    // ),
+                    ProjectSection(key: _projectsKey),
 
                     const SizedBox(height: 150),
 

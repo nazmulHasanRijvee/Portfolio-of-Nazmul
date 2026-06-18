@@ -25,4 +25,12 @@ class AppStrings {
       ' With a foundation in computer science and a specialization in cross-platform mobile development, I bridge the gap between complex backend'
       ' logic and beautiful front-end interfaces';
 
+  // Skill section
+  static const String skills = '02. SKILLS';
+  static const skillDetails = 'Core Competencies';
+
+  // projectSection
+  static const String projects = '03. SELECTED WORKS';
+  static const String projectDetails = 'Built with Flutter';
+
 }
