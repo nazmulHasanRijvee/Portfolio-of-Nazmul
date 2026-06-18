@@ -81,4 +81,16 @@ class AppTextStyles {
       fontSize: 16
   );
 
+   /// Skill section
+  static TextStyle get skillLabelStyle => TextStyle(
+    color: Colors.white70,
+    fontWeight: .w700,
+    fontSize: 26
+  );
+  static TextStyle get subSkillStyle => TextStyle(
+      color: Colors.white70,
+      fontWeight: .w500,
+      fontSize: 16
+  );
+
 }

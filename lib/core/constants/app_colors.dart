@@ -18,4 +18,8 @@ class AppColors {
 
   /// about section
   static const aboutContainer = Color(0xFF2F2F40);
+
+  /// skill section
+  static const skillContainer = Color(0xFF0E0F16); // 191C22 // 1A1A2A // #0e0f16
+  static const subSkillContainer = Color(0xFF44474E); // #5C5E66
 }

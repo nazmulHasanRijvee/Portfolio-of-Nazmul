@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/extensions/media_query_extension.dart';
 import 'package:flutter7_portfolio/features/home/widgets/about_section.dart';
 import 'package:flutter7_portfolio/features/home/widgets/hero_section.dart';
+import 'package:flutter7_portfolio/features/home/widgets/skill_section.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -96,20 +97,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 150),
 
-                    // Text(
-                    //     'About Section',
-                    //   key: _aboutKey,
-                    //   style: AppTextStyles.testStyle,
-                    // ),
                     AboutSection(key: _aboutKey),
 
                     const SizedBox(height: 150),
 
-                    Text(
-                      'Skills Section',
-                      key: _skillsKey,
-                      style: AppTextStyles.testStyle,
-                    ),
+                    // Text(
+                    //   'Skills Section',
+                    //   key: _skillsKey,
+                    //   style: AppTextStyles.testStyle,
+                    // ),
+                    SkillSection(key: _skillsKey),
 
                     const SizedBox(height: 150),
 
