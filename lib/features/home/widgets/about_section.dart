@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/constants/app_text_styles.dart';
 import 'package:flutter7_portfolio/data/models/about_section_model.dart';
+import 'package:flutter7_portfolio/features/home/widgets/section_header.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
@@ -65,7 +66,8 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
         mainAxisSize: .min,
         children: [
           // unpacking list using spread operator
-          ...buildHeader(ratio, false),
+          // ...buildHeader(ratio, false),
+          SectionHeader(ratio: ratio, isMobile: false),
           const SizedBox(height: 60),
           Row(
             children: [
@@ -97,7 +99,8 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
         mainAxisSize: .min,
         children: [
           // unpacking list using spread operator
-          ...buildHeader(ratio, false),
+          // ...buildHeader(ratio, false),
+          SectionHeader(ratio: ratio, isMobile: false),
           const SizedBox(height: 40),
           Row(
             children: [
@@ -130,7 +133,8 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
         mainAxisSize: .min,
         children: [
           // unpacking list using spread operator
-          ...buildHeader(ratio, false),
+          // ...buildHeader(ratio, false),
+          SectionHeader(ratio: ratio, isMobile: false),
           const SizedBox(height: 40),
           Row(
             children: [
@@ -162,7 +166,8 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
         mainAxisSize: .min,
         children: [
           // unpacking list using spread operator
-          ...buildHeader(ratio, true),
+          // ...buildHeader(ratio, true),
+          SectionHeader(ratio: ratio, isMobile: true),
           const SizedBox(height: 60),
           Align(
             alignment: .center,
@@ -206,7 +211,8 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
   }
 
   Widget buildDescriptionText(double ratio, bool isMobile) {
-    return SizedBox(
+    return Container(
+      margin: isMobile ? .only(left: 15 * ratio) : null,
       width: isMobile ? double.infinity * ratio : 670 * ratio,
       child: Text(
         AppStrings.aboutDescription,
@@ -303,28 +309,27 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
 
   }
 
-  List<Widget> buildHeader(double ratio, bool isMobile) {
-
-    return  [
-        Text(
-          AppStrings.aboutMe,
-          style: AppTextStyles.aboutMeStyle
-              .copyWith(fontSize: isMobile ? 20 * ratio : 14 * ratio),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          AppStrings.aboutPrecision,
-          style: AppTextStyles.aboutPrecisionStyle
-              .copyWith(fontSize: isMobile ? 34 * ratio : 28 * ratio),
-        ),
-      ];
-
-  }
+  // List<Widget> buildHeader(double ratio, bool isMobile) {
+  //
+  //   return  [
+  //       Text(
+  //         AppStrings.aboutMe,
+  //         style: AppTextStyles.aboutMeStyle
+  //             .copyWith(fontSize: isMobile ? 20 * ratio : 16 * ratio),
+  //       ),
+  //       const SizedBox(height: 10),
+  //       Text(
+  //         AppStrings.aboutPrecision,
+  //         style: AppTextStyles.aboutPrecisionStyle
+  //             .copyWith(fontSize: isMobile ? 34 * ratio : 30 * ratio),
+  //       ),
+  //     ];
+  //
+  // }
 
   Column buildAboutDescriptionForMobile(double ratio) {
     return Column(
       mainAxisSize: .min,
-      mainAxisAlignment: .center,
       children: [
         buildDescriptionText(ratio, true),
         const SizedBox(height: 40),
