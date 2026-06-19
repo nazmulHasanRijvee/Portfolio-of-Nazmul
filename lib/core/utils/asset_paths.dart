@@ -1,9 +1,13 @@
 class AssetPaths {
 
   const AssetPaths._();
-  static const String background = 'assets/images/bg.svg';
-  static const String profile = 'assets/images/profile3.svg';
-  static const String about = 'assets/images/about.svg';
-  static const String projectOne = 'assets/images/pr1.png';
+  static const String _baseAssetPath = 'assets/images';
+  static const String background = '$_baseAssetPath/bg.svg';
+  static const String profile = '$_baseAssetPath/profile3.svg';
+  static const String about = '$_baseAssetPath/about.svg';
+  static const String projectOne = '$_baseAssetPath/pr1.png';
+  static const String projectTwo = '$_baseAssetPath/pr2.png';
+  static const String projectThree = '$_baseAssetPath/pr3.png';
+  static const String projectFour = '$_baseAssetPath/pr4.png';
 
 }

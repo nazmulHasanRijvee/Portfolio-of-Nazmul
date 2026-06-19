@@ -25,5 +25,8 @@ class AppColors {
 
   /// Project section
   static const projectOneContainer = Color(0xFF0E0F16);
+  static const projectOneTag = Color(0xFF1D2026); // #1d2026
+  static const subProjectContainer = Color(0xFF0E0F16);
+  static const subProjectTag = Color(0xFF32353C);
 
 }

@@ -32,5 +32,6 @@ class AppStrings {
   // projectSection
   static const String projects = '03. SELECTED WORKS';
   static const String projectDetails = 'Built with Flutter';
+  static const String projectOneDetails = 'Project Details';
 
 }

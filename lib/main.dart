@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter7_portfolio/core/utils/svg_precaching.dart';
 
 import 'core/theme/app_theme.dart';
+import 'core/utils/asset_paths.dart';
 import 'features/home/screens/home_screen.dart';
 
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SvgPrecaching.precacheSvgAssets([
+    AssetPaths.profile,
+    AssetPaths.background
+  ]).timeout(
+      const Duration(seconds: 2),
+      onTimeout: () => debugPrint('SVG precache timed out')
+  );
+
   runApp(const MyApp());
 }
 

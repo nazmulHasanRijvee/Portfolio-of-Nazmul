@@ -93,4 +93,27 @@ class AppTextStyles {
       fontSize: 16
   );
 
+  /// Project Section
+  static TextStyle get projectOneTitle => TextStyle(
+    color: Colors.white,
+    fontWeight: .w700,
+    fontSize: 26
+  );
+  static TextStyle get projectOneDescription => TextStyle(
+    color: Colors.white70,
+    fontWeight: .w500,
+    fontSize: 18
+  );
+  static TextStyle get projectOneTag => TextStyle(
+      color: AppColors.primaryColor,
+      fontWeight: .w300,
+      fontSize: 14
+  );
+  static TextStyle get projectOneButton => TextStyle(
+    color: AppColors.textSecondary,
+    fontWeight: .w900,
+    fontSize: 16,
+
+  );
+
 }
