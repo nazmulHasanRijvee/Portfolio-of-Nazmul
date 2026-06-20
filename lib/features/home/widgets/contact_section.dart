@@ -21,6 +21,7 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
 
   late final List<Animation<double>> _fadeAnimations;
   late final ValueNotifier<int> _currentIndex;
+  late final ValueNotifier<int> _iconIndex;
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
     ).toList();
     
     _currentIndex = ValueNotifier(4);
+    _iconIndex = ValueNotifier(4);
 
   }
 
@@ -54,6 +56,7 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
       c.dispose();
     }
     _currentIndex.dispose();
+    _iconIndex.dispose();
     super.dispose();
   }
 
@@ -90,9 +93,13 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
             children: [
               buildContactSectionHeader(ratio: ratio, isMobile: false),
               const SizedBox(height: 60),
-              buildGrid(ratio),
+              buildGrid(
+                  ratio: ratio,
+                  horizontal: 60,
+                  childAspectRatio: 1.4 * ratio
+              ),
               const SizedBox(height: 60),
-              buildBottomBar(ratio)
+              buildBottomBar(ratio, false)
             ]
         )
     );
@@ -101,13 +108,50 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
 
   Widget buildTabletLayout(double width) {
 
-    return SizedBox();
+    final ratio = (width / AppBreakpoints.tablet).clamp(0.5, 1.0);
+
+    return Align(
+        alignment: .center,
+        child: Column(
+            crossAxisAlignment: .center,
+            mainAxisSize: .min,
+            children: [
+              buildContactSectionHeader(ratio: ratio, isMobile: false),
+              const SizedBox(height: 60), // 40 for mobile
+              buildGrid(
+                  ratio: ratio,
+                  horizontal: 40,
+                  childAspectRatio: 1.0 * ratio
+              ),
+              const SizedBox(height: 60),
+              buildBottomBar(ratio, false)
+            ]
+        )
+    );
 
   }
 
   Widget buildMobileLayout(double width) {
 
-    return SizedBox();
+    final ratio = (width / AppBreakpoints.mobile).clamp(0.5, 1.0);
+
+    return Align(
+        alignment: .center,
+        child: Column(
+            crossAxisAlignment: .center,
+            mainAxisSize: .min,
+            children: [
+              buildContactSectionHeader(ratio: ratio, isMobile: true),
+              const SizedBox(height: 40),
+              buildListForMobile(
+                  ratio: ratio,
+                  horizontal: 24,
+              ),
+              const SizedBox(height: 60),
+              buildBottomBar(ratio, true)
+            ]
+        )
+    );
 
   }
 
@@ -126,27 +170,31 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
               .copyWith(fontSize: isMobile ? 20 * ratio : 16 * ratio),
         ),
         const SizedBox(height: 10),
-        Text(
-          AppStrings.contactSectionHeading,
-          style: AppTextStyles.aboutPrecisionStyle
-              .copyWith(fontSize: isMobile ? 34 * ratio : 30 * ratio),
+        SizedBox(
+          width: isMobile ? 500 * ratio : null,
+          child: Text(
+            AppStrings.contactSectionHeading,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.aboutPrecisionStyle
+                .copyWith(fontSize: isMobile ? 34 * ratio : 30 * ratio),
+          ),
         ),
       ],
     );
 
   }
 
-  Widget buildGrid(double ratio) {
+  Widget buildGrid({required double ratio, required double horizontal, required double childAspectRatio}) {
 
     return GridView.builder(
         shrinkWrap: true,
-        padding: .symmetric(horizontal: 60 * ratio),
+        padding: .symmetric(horizontal: horizontal * ratio),
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 30 * ratio,
             mainAxisSpacing: 40 * ratio,
-            childAspectRatio: 1.4 * ratio,
+            childAspectRatio: childAspectRatio,
         ),
         itemCount: ContactSectionModel.contacts.length,
         itemBuilder: (BuildContext context, int index) {
@@ -162,17 +210,17 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
               _controllers[index].reverse();
               _currentIndex.value = 4;
               },
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {}, // url launcher
                 child: ValueListenableBuilder(
                   valueListenable: _currentIndex,
                   builder: (BuildContext context, int value, Widget? child) {
                     return buildContactContainer(
-                        ratio,
-                        model,
-                        _animations[index],
-                        _fadeAnimations[index],
-                        value == index
+                        ratio: ratio,
+                        model: model,
+                        animation: _animations[index],
+                        fadeAnimation: _fadeAnimations[index],
+                        isHovered: value == index
                     );
                   }
                 ),
@@ -184,47 +232,46 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
 
   }
 
-  Widget buildContactContainer(double ratio, ContactSectionEntity model, Animation<Offset> animation, Animation<double> fadeAnimation, bool isHovered) {
-    return Stack(
-      alignment: .bottomCenter,
-      children: [
-        Container(
-              alignment: .center,
-              padding: .symmetric(horizontal: 24 * ratio, vertical: 24 * ratio),
-              decoration: BoxDecoration(
-                color: AppColors.skillContainer,
-                borderRadius: BorderRadius.circular(4)
+  Widget buildContactContainer({
+      required double ratio,
+      required ContactSectionEntity model,
+      required Animation<Offset> animation,
+      required Animation<double> fadeAnimation,
+      required bool isHovered,
+      bool isMobile = false}) {
+    return Container(
+          alignment: .center,
+          height: isMobile ? 400 * ratio : null,
+          padding: .symmetric(horizontal: 24 * ratio, vertical:  24 * ratio),
+          decoration: BoxDecoration(
+            color: AppColors.skillContainer,
+            borderRadius: BorderRadius.circular(4)
+          ),
+          child: Column(
+            mainAxisSize: .min,
+            children: [
+              SizedBox(height: isMobile ? null :  40 * ratio),
+              buildIcon(ratio ,model, isHovered, isMobile),
+              SizedBox(height: isMobile? 35 * ratio : 25 * ratio),
+              Text(
+                model.title,
+                style: AppTextStyles.contactTitle
+                    .copyWith(fontSize: isMobile? 26 : 24 * ratio),
               ),
-              child: Column(
-                mainAxisSize: .min,
-                children: [
-                  buildIcon(ratio ,model, isHovered),
-                  SizedBox(height: 25 * ratio),
-                  Text(
-                    model.title,
-                    style: AppTextStyles.contactTitle
-                        .copyWith(fontSize: 24 * ratio),
-                  ),
-                  SizedBox(height: 8 * ratio),
-                  Text(
-                    model.description,
-                    style: AppTextStyles.contactDescription
-                        .copyWith(fontSize: 20 * ratio),
-                  ),
-                  SizedBox(height: 20 * ratio),
-                  // buildTransition(fadeAnimation, animation)
-                ],
+              SizedBox(height: 8 * ratio),
+              Text(
+                model.description,
+                style: AppTextStyles.contactDescription
+                    .copyWith(fontSize: isMobile ? 22 * ratio : 20 * ratio),
               ),
-            ),
-        Positioned(
-          bottom: 40 / ratio,
-          child: buildTransition(fadeAnimation, animation),
-        )
-      ],
-    );
+              SizedBox(height: 20 * ratio),
+              buildTransition(ratio, fadeAnimation, animation, isMobile)
+            ],
+          ),
+        );
   }
 
-  FadeTransition buildTransition(Animation<double> fadeAnimation, Animation<Offset> animation) {
+  FadeTransition buildTransition(double ratio, Animation<double> fadeAnimation, Animation<Offset> animation, bool isMobile) {
     return FadeTransition(
               opacity: fadeAnimation,
               child: SlideTransition(
@@ -232,14 +279,14 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
                 child: Icon(
                   Icons.arrow_forward_rounded,
                   color: AppColors.primaryColor,
-                  size: 24,
+                  size: isMobile ?  30 * ratio : 24 * ratio,
                   fontWeight: .w600,
                 ),
               ),
             );
   }
 
-  Container buildIcon(double ratio,ContactSectionEntity model, bool isHovered) {
+  Container buildIcon(double ratio,ContactSectionEntity model, bool isHovered, bool isMobile) {
     return Container(
       padding: .symmetric(horizontal: 10 * ratio, vertical: 8 * ratio),
       decoration: BoxDecoration(
@@ -249,15 +296,15 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
       child: Icon(
         model.icon,
         color: isHovered ? AppColors.primaryColor : Colors.white70,
-        size: 32 * ratio,
+        size: isMobile ? 42 * ratio : 32 * ratio,
       ),
     );
   }
 
-  Container buildBottomBar(double ratio) {
+  Container buildBottomBar(double ratio, bool isMobile) {
     return Container(
       width: double.maxFinite,
-      padding: .only(top: 25 * ratio, bottom: 15 * ratio),
+      padding: .only(top: 30 * ratio, bottom: (isMobile ? 30 : 20) * ratio),
       alignment: .center,
       decoration: BoxDecoration(
           color: AppColors.skillContainer
@@ -268,23 +315,28 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
           Text(
             AppStrings.lastTitle,
             style: AppTextStyles.finalTitle
-                .copyWith(fontSize: 16 * ratio),
+                .copyWith(fontSize: isMobile ? 22 * ratio : 18 * ratio),
           ),
           SizedBox(height: 10 * ratio),
           Row(
-            spacing: 20 * ratio,
+            spacing: 25 * ratio,
             mainAxisAlignment: .center,
-            children: buildLastIcons(ratio, [
-              Icons.mail_outline_rounded,
-              Icons.code_rounded,
-              Icons.terminal_rounded,
-              ])
+            children: buildLastIcons(
+                ratio,
+                [
+                  Icons.mail_outline_rounded,
+                  Icons.code_rounded,
+                  Icons.terminal_rounded,
+                ],
+                _iconIndex,
+                isMobile
+            )
           ),
-          SizedBox(height: 15 * ratio),
+          SizedBox(height: (isMobile ? 30 : 20 ) * ratio),
           Text(
             AppStrings.lastDescription,
             style: AppTextStyles.finalDescription
-                .copyWith(fontSize: 16 * ratio),
+                .copyWith(fontSize: isMobile? 22 * ratio : 18 * ratio),
           )
 
         ],
@@ -292,10 +344,76 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
     );
   }
 
-  List<Widget> buildLastIcons(double ratio, List<IconData> icons) {
+  List<Widget> buildLastIcons(double ratio, List<IconData> icons, ValueNotifier<int> indexNotifier, bool isMobile) {
 
     return List.generate(icons.length,
-            (index) => Icon(icons[index], color: Colors.white70, size: 22 * ratio));
+            (index) =>
+                MouseRegion(
+                  onEnter: (event) {
+                    indexNotifier.value = index;
+                  },
+                  onExit: (event) {
+                    indexNotifier.value = 4;
+                  },
+                  child: InkWell(
+                    onTap: () {},// url launcher
+                    child: ValueListenableBuilder(
+                      valueListenable: indexNotifier,
+                      builder: (context, value, child) {
+                        return Icon(
+                            icons[index],
+                            color: value == index ? AppColors.primaryColor : Colors.white70,
+                            size: isMobile? 32 * ratio : 28 * ratio
+                        );
+                      }
+                    ),
+                  ),
+                )
+    );
+
+  }
+
+  Widget buildListForMobile({required double ratio, required double horizontal}) {
+
+    return ListView.separated(
+        shrinkWrap: true,
+        padding: .symmetric(horizontal: horizontal * ratio),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: ContactSectionModel.contacts.length,
+        itemBuilder: (BuildContext context, int index) {
+
+          final model = ContactSectionModel.contacts[index];
+
+          return MouseRegion(
+              onEnter: (event) {
+                _controllers[index].forward();
+                _currentIndex.value = index;
+              },
+              onExit: (event) {
+                _controllers[index].reverse();
+                _currentIndex.value = 4;
+              },
+              child: GestureDetector(
+                onTap: () {}, // url launcher
+                child: ValueListenableBuilder(
+                    valueListenable: _currentIndex,
+                    builder: (BuildContext context, int value, Widget? child) {
+                      return buildContactContainer(
+                          ratio: ratio,
+                          model: model,
+                          animation: _animations[index],
+                          fadeAnimation:  _fadeAnimations[index],
+                          isHovered: value == index,
+                          isMobile: true
+                      );
+                    }
+                ),
+              )
+          );
+
+        },
+        separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 25),
+    );
 
   }
 
