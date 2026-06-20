@@ -168,7 +168,7 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
           // unpacking list using spread operator
           // ...buildHeader(ratio, true),
           SectionHeader(ratio: ratio, isMobile: true),
-          const SizedBox(height: 60),
+          const SizedBox(height: 40),
           Align(
             alignment: .center,
               child: buildAboutImage(ratio)),

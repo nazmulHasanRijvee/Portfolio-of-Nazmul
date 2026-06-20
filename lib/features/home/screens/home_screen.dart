@@ -5,9 +5,9 @@ import 'package:flutter7_portfolio/features/home/widgets/hero_section.dart';
 import 'package:flutter7_portfolio/features/home/widgets/skill_section.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
-import '../../../core/constants/app_text_styles.dart';
 import '../../nav_bar/screens/nav_bar.dart';
 import '../widgets/background.dart';
+import '../widgets/contact_section.dart';
 import '../widgets/project_section.dart';
 
 class HomeScreen extends StatefulWidget{
@@ -106,20 +106,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 150),
 
-                    // Text(
-                    //     'Projects Section',
-                    //   key: _projectsKey,
-                    //   style: AppTextStyles.testStyle,
-                    // ),
                     ProjectSection(key: _projectsKey),
 
                     const SizedBox(height: 150),
 
-                    Text(
-                        'Contact Section',
-                      key: _contactKey,
-                      style: AppTextStyles.testStyle,
-                    )
+                    // Text(
+                    //     'Contact Section',
+                    //   key: _contactKey,
+                    //   style: AppTextStyles.testStyle,
+                    // )
+                    ContactSection(key: _contactKey),
 
                   ]
                 ),

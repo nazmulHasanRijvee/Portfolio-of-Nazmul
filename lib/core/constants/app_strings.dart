@@ -34,4 +34,9 @@ class AppStrings {
   static const String projectDetails = 'Built with Flutter';
   static const String projectOneDetails = 'Project Details';
 
+  // Contact Section
+  static const String contactSectionNumber = '04. GET IN TOUCH';
+  static const String contactSectionHeading = 'Lets build Something remarkable';
+  static const String lastTitle = 'NazmulDev';
+  static const String lastDescription = 'ⓒ 2026 MD Nazmul Hasan  •  Built with Flutter Web';
 }

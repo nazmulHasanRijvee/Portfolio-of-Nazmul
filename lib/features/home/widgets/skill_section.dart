@@ -103,9 +103,9 @@ class _SkillSectionState extends State<SkillSection> {
               child: buildSkillGrid(
                 ratio: ratio,
                 crossAxisCount: 2,
-                crossAxisSpacing: 30,
+                crossAxisSpacing: 40,
                 mainAxisSpacing: 40,
-                childAspectRatio: 1.6,
+                childAspectRatio: 2,
                 isTablet: true,
               ),
             )
@@ -132,7 +132,7 @@ class _SkillSectionState extends State<SkillSection> {
                 sectionNumber: AppStrings.skills,
                 sectionTitle: AppStrings.skillDetails,
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 40),
             Flexible(
               child: buildSkillListView(ratio)
             )

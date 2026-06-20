@@ -97,12 +97,12 @@ class AppTextStyles {
   static TextStyle get projectOneTitle => TextStyle(
     color: Colors.white,
     fontWeight: .w700,
-    fontSize: 26
+    fontSize: 20
   );
   static TextStyle get projectOneDescription => TextStyle(
     color: Colors.white70,
     fontWeight: .w500,
-    fontSize: 18
+    fontSize: 16
   );
   static TextStyle get projectOneTag => TextStyle(
       color: AppColors.primaryColor,
@@ -115,5 +115,28 @@ class AppTextStyles {
     fontSize: 16,
 
   );
+
+  /// Contact Section
+  static TextStyle get contactTitle => TextStyle(
+      color: Colors.white70,
+      fontWeight: .w800,
+      fontSize: 20
+  );
+  static TextStyle get contactDescription => TextStyle(
+      color: Colors.white54,
+      fontWeight: .w600,
+      fontSize: 16
+  );
+  static TextStyle get finalTitle => TextStyle(
+    color: Colors.white,
+    fontWeight: .w600,
+    fontSize: 16
+  );
+  static TextStyle get finalDescription => TextStyle(
+      color: Colors.white70,
+      fontWeight: .w500,
+      fontSize: 14
+  );
+
 
 }
