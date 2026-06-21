@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/constants/app_strings.dart';
 import 'package:flutter7_portfolio/core/constants/app_text_styles.dart';
+import 'package:flutter7_portfolio/core/utils/url_launcher.dart';
 import 'package:flutter7_portfolio/features/home/widgets/section_header.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
@@ -173,7 +174,6 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
                 mainAxisSize: .min,
                 children: [
                   Row(
-                    spacing: isTablet ? 60 * ratio : 100 * ratio,
                     mainAxisSize: .min,
                     mainAxisAlignment: .start,
                     crossAxisAlignment: .start,
@@ -183,11 +183,13 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
                         style: AppTextStyles.projectOneTitle
                             .copyWith(fontSize: isTablet ? 20 * ratio : 26 * ratio),
                       ),
+                      const Spacer(flex: 7,),
                       Icon(
                         Icons.code_rounded,
                         color: Colors.white54,
                         size: isTablet ? 20 * ratio : 26 * ratio,
-                      )
+                      ),
+                      const Spacer(flex: 3,),
                     ],
                   ),
                   SizedBox(height: 38 * ratio),
@@ -196,19 +198,19 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
                     child: Text(
                       ProjectSectionModel.projectOne.description,
                       style: AppTextStyles.projectOneDescription
-                          .copyWith(fontSize: 18 * ratio),
+                          .copyWith(fontSize: 16 * ratio), /// Mark
                     ),
                   ),
                   SizedBox(height: 30 * ratio),
                   buildProjectOneTags(ratio, isTablet),
                   SizedBox(height: 35 * ratio),
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: () => UrlLauncher.openLLMApp(),
                     style: FilledButton.styleFrom(
                       padding: .symmetric(horizontal: 48 * ratio, vertical: 16 * ratio),
                       backgroundColor: AppColors.primaryColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.elliptical(5, 8)),
+                        borderRadius: BorderRadius.circular(3),
                       ),
                     ),
                     child: Text(
@@ -311,15 +313,18 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
             onExit: (event) {
               _animationControllers[index].reverse();
             },
-            child: Stack(
-              children: [
-                buildSubProjectContainer(index: index, ratio: ratio, model: model),
-                Positioned(
-                    top: 10,
-                    right: 10,
-                    child: buildCodeIcon(ratio)
-                )
-              ],
+            child: InkWell(
+              onTap: () => UrlLauncher.openSubproject(index),
+              child: Stack(
+                children: [
+                  buildSubProjectContainer(index: index, ratio: ratio, model: model),
+                  Positioned(
+                      top: 10,
+                      right: 10,
+                      child: buildCodeIcon(ratio)
+                  )
+                ],
+              ),
             ),
           );
 
@@ -328,19 +333,16 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
   }
 
   Widget buildCodeIcon(double ratio) {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        padding: .symmetric(horizontal: 12 * ratio, vertical: 6 * ratio),
-        decoration: BoxDecoration(
-            color: AppColors.skillContainer,
-            borderRadius: BorderRadius.circular(6)
-        ),
-        child: Icon(
-          Icons.code_rounded,
-          color: Colors.white70,
-          size: 20,
-        ),
+    return Container(
+      padding: .symmetric(horizontal: 12 * ratio, vertical: 6 * ratio),
+      decoration: BoxDecoration(
+          color: AppColors.skillContainer,
+          borderRadius: BorderRadius.circular(6)
+      ),
+      child: Icon(
+        Icons.code_rounded,
+        color: Colors.white70,
+        size: 20,
       ),
     );
   }
@@ -392,7 +394,7 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
               child: Text(
                 model.description,
                 style: AppTextStyles.projectOneDescription
-                    .copyWith(fontSize: isMobile ? 20 * ratio : 16 * ratio),
+                    .copyWith(fontSize: isMobile ? 18 * ratio : 14 * ratio), /// Mark for mobile old 20
               ),
             ),
             SizedBox(height: 20 * ratio),
@@ -527,14 +529,14 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
             child: Text(
               ProjectSectionModel.projectOne.description,
               style: AppTextStyles.projectOneDescription
-                  .copyWith(fontSize: 18 * ratio),
+                  .copyWith(fontSize: 18 * ratio),  /// Mark
             ),
           ),
           SizedBox(height: 30 * ratio),
           buildProjectOneTags(ratio, false),
           SizedBox(height: 35 * ratio),
           FilledButton(
-            onPressed: () {},
+            onPressed: () => UrlLauncher.openLLMApp(),
             style: FilledButton.styleFrom(
               padding: .symmetric(horizontal: 48 * ratio, vertical: 16 * ratio),
               backgroundColor: AppColors.primaryColor,
@@ -570,15 +572,18 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
             onExit: (event) {
               _animationControllers[index].reverse();
             },
-            child: Stack(
-              children: [
-                buildSubProjectContainer(index: index, ratio: ratio, model: model, isMobile: true),
-                Positioned(
-                    top: 10,
-                    right: 10,
-                    child: buildCodeIcon(ratio)
-                )
-              ],
+            child: InkWell(
+              onTap: () => UrlLauncher.openSubproject(index),
+              child: Stack(
+                children: [
+                  buildSubProjectContainer(index: index, ratio: ratio, model: model, isMobile: true),
+                  Positioned(
+                      top: 10,
+                      right: 10,
+                      child: buildCodeIcon(ratio)
+                  )
+                ],
+              ),
             ),
           );
 

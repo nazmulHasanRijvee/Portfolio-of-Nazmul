@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
+import 'package:flutter7_portfolio/core/constants/app_strings.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/extensions/media_query_extension.dart';
+import '../../../core/utils/url_launcher.dart';
 
 class MobileNavBar extends StatefulWidget {
 
@@ -23,11 +25,12 @@ class _MobileNavBarState extends State<MobileNavBar> {
   Widget build(BuildContext context) {
 
     final double ratio = context.sizeOf.width / AppBreakpoints.mobile;
-    final double secondRatio = context.sizeOf.width / (AppBreakpoints.mobile * 0.7);
+    final double secondRatio = (context.sizeOf.width / (AppBreakpoints.mobile * 0.7))
+        .clamp(0.1, 1.0);
 
     return Container(
-      height: 60,
-      padding: EdgeInsets.symmetric(horizontal: 38 * ratio),
+      height: 80 * ratio,
+      padding: EdgeInsets.symmetric(horizontal: 38 * ratio,),
       decoration: BoxDecoration(
         color: AppColors.background.withValues(alpha: 0.95),
         border: Border(
@@ -40,12 +43,9 @@ class _MobileNavBarState extends State<MobileNavBar> {
         children: [
           // Logo
           Text(
-            'NazmulDev',
-            style: TextStyle(
-              color: AppColors.white,
-              fontSize: (24 * secondRatio).clamp(11, 24),
-              fontWeight: FontWeight.bold,
-            ),
+            AppStrings.appTitle,
+            style: AppTextStyles.navBarAppTitle
+                .copyWith(fontSize: 24 * secondRatio)
           ),
 
           const Spacer(),
@@ -54,7 +54,8 @@ class _MobileNavBarState extends State<MobileNavBar> {
           // Resume button
           FilledButton(
             onPressed: () {
-              debugPrint('Resume button pressed ${context.sizeOf.width}');
+              // debugPrint('Resume button pressed ${context.sizeOf.width}');
+              UrlLauncher.openResume();
             }, // url_launcher later
             style: FilledButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 15 * ratio, horizontal: 40 * ratio),
@@ -64,7 +65,7 @@ class _MobileNavBarState extends State<MobileNavBar> {
               backgroundColor: AppColors.filledButtonColor,
             ),
             child: Text(
-                'Download Resume',
+                AppStrings.downloadResume,
                 style: AppTextStyles.resumeButton.copyWith(fontSize: 24 * ratio, fontWeight: .w700)
             ),
           ),

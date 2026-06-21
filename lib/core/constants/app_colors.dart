@@ -17,7 +17,8 @@ class AppColors {
   static const floatingBadge = Color(0xFF191C22);
 
   /// about section
-  static const aboutContainer = Color(0xFF2F2F40);
+  static const aboutContainer = Color(0xFF1D2026); // #1d2026 2F2F40
+  static const aboutContainerBorder = Color(0xFF202329);
 
   /// skill section
   static const skillContainer = Color(0xFF0E0F16); // 191C22 // 1A1A2A // #0e0f16

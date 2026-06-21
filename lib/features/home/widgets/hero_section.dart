@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
 import 'package:flutter7_portfolio/core/utils/asset_paths.dart';
+import 'package:flutter7_portfolio/core/utils/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -10,7 +11,9 @@ import '../../../core/constants/app_text_styles.dart';
 
 class HeroSection extends StatefulWidget {
 
-  const HeroSection({super.key}); // _heroKey is directly assigned no parameter needed
+  final VoidCallback onPressed;
+
+  const HeroSection({super.key, required this.onPressed}); // _heroKey is directly assigned no parameter needed
 
   @override
   State<HeroSection> createState() => _HeroSectionState();
@@ -262,7 +265,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
                   Text(
                       label,
                       style: AppTextStyles
-                          .badgeStyle.copyWith(fontSize: (12 * ratio).clamp(5, 12))
+                          .badgeStyle.copyWith(fontSize: (13 * ratio).clamp(5, 12))
                   )
                 ],
               ),
@@ -290,7 +293,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
             Text(
                 AppStrings.flutterBadge,
                 style: AppTextStyles.badgeStyle
-                    .copyWith(fontSize: (12 * ratio).clamp(5, 12))
+                    .copyWith(fontSize: (13 * ratio).clamp(5, 12))
             )
           ],
         ),
@@ -359,11 +362,12 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
         Row(
           children: [
             FilledButton(
-              onPressed: () {}, // url launcher
+              onPressed: widget.onPressed,
               style: FilledButton.styleFrom(
+                  padding: .symmetric(horizontal: 24 * ratio, vertical: 15 * ratio),
                   backgroundColor: AppColors.primaryColor,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(5)
+                      borderRadius: BorderRadiusGeometry.circular(4)
                   )
               ),
               child: Text(
@@ -372,13 +376,14 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
                       .copyWith(fontSize: (22 * ratio))
               ),
             ),
-            const SizedBox(width: 20),
+            SizedBox(width: 20 * ratio),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: () => UrlLauncher.openGitHub(),
               style: OutlinedButton.styleFrom(
+                  padding: .symmetric(horizontal: 40 * ratio, vertical: 15 * ratio),
                   backgroundColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(5),
+                      borderRadius: BorderRadiusGeometry.circular(4),
                       side: BorderSide(width: 1, color: Colors.white)
                   )
               ),
@@ -390,19 +395,33 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
             )
           ],
         ),
-        const SizedBox(height: 30),
+        SizedBox(height: 28 * ratio),
         Row(
           children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.code_rounded, color: Colors.white)),
+            buildIconButton(
+                ratio,
+                Icons.code_rounded,
+                () => UrlLauncher.openGitHub()
+            ),
             const SizedBox(width: 5),
-            IconButton(onPressed: () {}, icon: Icon(Icons.link_rounded, color: Colors.white)),
+            buildIconButton(
+                ratio,
+                Icons.link_rounded,
+                () => UrlLauncher.openLinkedin()
+            ),
             const SizedBox(width: 5),
-            IconButton(onPressed: () {}, icon: Icon(Icons.mail_outline_rounded, color: Colors.white))
+            buildIconButton(
+                ratio,
+                Icons.mail_outline_rounded,
+                () => UrlLauncher.openMail()
+            ),
           ],
         )
       ],
     );
   }
+
+  IconButton buildIconButton(double ratio, IconData icon, VoidCallback onTap) => IconButton(onPressed: onTap, icon: Icon(icon, color: Colors.white, size: 30 * ratio));
 
   Container buildAvailableForHire() {
     return Container(

@@ -280,10 +280,10 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
       width: isMiddle ? 40 * ratio : 190 * ratio, // 40 old
       decoration: BoxDecoration(
         color: AppColors.aboutContainer,
-        borderRadius: BorderRadiusGeometry.circular(8),
+        borderRadius: BorderRadiusGeometry.circular(4),
         border: BoxBorder.all(
-          color: AppColors.border, // Control border color
-          width: 0.5
+          color: AppColors.aboutContainerBorder, // Control border color
+          width: 1.0
         )
       ),
       child:  Column(
@@ -308,24 +308,6 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
     );
 
   }
-
-  // List<Widget> buildHeader(double ratio, bool isMobile) {
-  //
-  //   return  [
-  //       Text(
-  //         AppStrings.aboutMe,
-  //         style: AppTextStyles.aboutMeStyle
-  //             .copyWith(fontSize: isMobile ? 20 * ratio : 16 * ratio),
-  //       ),
-  //       const SizedBox(height: 10),
-  //       Text(
-  //         AppStrings.aboutPrecision,
-  //         style: AppTextStyles.aboutPrecisionStyle
-  //             .copyWith(fontSize: isMobile ? 34 * ratio : 30 * ratio),
-  //       ),
-  //     ];
-  //
-  // }
 
   Column buildAboutDescriptionForMobile(double ratio) {
     return Column(

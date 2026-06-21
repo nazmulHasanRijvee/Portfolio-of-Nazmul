@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter7_portfolio/core/utils/url_launcher.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_colors.dart';
@@ -211,7 +212,7 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
               _currentIndex.value = 4;
               },
               child: InkWell(
-                onTap: () {}, // url launcher
+                onTap: () => UrlLauncher.openContacts(index), // url launcher
                 child: ValueListenableBuilder(
                   valueListenable: _currentIndex,
                   builder: (BuildContext context, int value, Widget? child) {
@@ -262,7 +263,7 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
               Text(
                 model.description,
                 style: AppTextStyles.contactDescription
-                    .copyWith(fontSize: isMobile ? 22 * ratio : 20 * ratio),
+                    .copyWith(fontSize: isMobile ? 22 * ratio : 20 * ratio), /// Mark old 22 : 20
               ),
               SizedBox(height: 20 * ratio),
               buildTransition(ratio, fadeAnimation, animation, isMobile)
@@ -304,7 +305,7 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
   Container buildBottomBar(double ratio, bool isMobile) {
     return Container(
       width: double.maxFinite,
-      padding: .only(top: 30 * ratio, bottom: (isMobile ? 30 : 20) * ratio),
+      padding: .only( top: 30 * ratio, bottom: (isMobile ? 30 : 20) * ratio),
       alignment: .center,
       decoration: BoxDecoration(
           color: AppColors.skillContainer
@@ -333,10 +334,13 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
             )
           ),
           SizedBox(height: (isMobile ? 30 : 20 ) * ratio),
-          Text(
-            AppStrings.lastDescription,
-            style: AppTextStyles.finalDescription
-                .copyWith(fontSize: isMobile? 22 * ratio : 18 * ratio),
+          Padding(   /// Might need to work on this for spacing on the left
+            padding: .only(left: isMobile ? 40.0 * ratio : 0),
+            child: Text(
+              AppStrings.lastDescription,
+              style: AppTextStyles.finalDescription
+                  .copyWith(fontSize: isMobile? 22 * ratio : 18 * ratio),
+            ),
           )
 
         ],
@@ -393,8 +397,8 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
                 _controllers[index].reverse();
                 _currentIndex.value = 4;
               },
-              child: GestureDetector(
-                onTap: () {}, // url launcher
+              child: InkWell(
+                onTap: () => UrlLauncher.openContacts(index), // url launcher
                 child: ValueListenableBuilder(
                     valueListenable: _currentIndex,
                     builder: (BuildContext context, int value, Widget? child) {

@@ -94,7 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     ),
 
-                    HeroSection(key: _heroKey),
+                    HeroSection(
+                        key: _heroKey,
+                        onPressed: () => _scrollToSection(_projectsKey),
+                    ),
 
                     const SizedBox(height: 150),
 

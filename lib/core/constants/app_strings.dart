@@ -2,7 +2,9 @@ class AppStrings {
 
   const AppStrings._();
 
+  // NavBar
   static const String appTitle = 'NazmulDev';
+  static const String downloadResume = 'Download Resume';
 
   // Hero section
   static const String hireAvailable = 'AVAILABLE FOR HIRE';
@@ -26,7 +28,7 @@ class AppStrings {
       ' logic and beautiful front-end interfaces';
 
   // Skill section
-  static const String skills = '02. SKILLS';
+  static const String skills = '02. TECHNICAL STACK';
   static const skillDetails = 'Core Competencies';
 
   // projectSection
@@ -36,7 +38,7 @@ class AppStrings {
 
   // Contact Section
   static const String contactSectionNumber = '04. GET IN TOUCH';
-  static const String contactSectionHeading = 'Lets build Something remarkable';
+  static const String contactSectionHeading = 'Lets build something remarkable';
   static const String lastTitle = 'NazmulDev';
   static const String lastDescription = 'ⓒ 2026 MD Nazmul Hasan  •  Built with Flutter Web';
 }

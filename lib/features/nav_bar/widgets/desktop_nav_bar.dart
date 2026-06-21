@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/extensions/media_query_extension.dart';
+import '../../../core/utils/url_launcher.dart';
 import '../../../data/models/nav_bar_model.dart';
+import 'nav_link.dart';
 
 class DesktopNavBar extends StatefulWidget {
 
@@ -37,6 +41,8 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
   @override
   Widget build(BuildContext context) {
 
+    final double ratio = context.sizeOf.width / AppBreakpoints.desktop;
+
 
     return Container(
       height: 60,
@@ -52,16 +58,13 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
         mainAxisAlignment: .center,
         children: [
           // Logo
-          const Text(
-            'NazmulDev',
-            style: TextStyle(
-              color: AppColors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          Text(
+            AppStrings.appTitle,
+            style: AppTextStyles.navBarAppTitle
+                .copyWith(fontSize: 18 ) // ratio here
           ),
 
-          SizedBox(width: 50 * (context.sizeOf.width / 1440)),
+          SizedBox(width: 50 * ratio),
 
           const Spacer(),
 
@@ -73,7 +76,8 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
           // Resume button
           FilledButton(
             onPressed: () {
-              debugPrint('Resume button pressed ${context.sizeOf.width}');
+              // debugPrint('Resume button pressed ${context.sizeOf.width}');
+              UrlLauncher.openResume();
             }, // url_launcher later
             style: FilledButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -82,7 +86,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
               backgroundColor: AppColors.filledButtonColor,
             ),
             child: Text(
-                'Download Resume',
+                AppStrings.downloadResume,
               style: AppTextStyles.resumeButton,
             ),
           ),
@@ -112,7 +116,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
 
                 final String navItem = NavBarModel.navItems[index];
 
-                return _NavLink(
+                return NavLink(
                     label: navItem,
                     isSelected: value == index,
                     onTap: () {
@@ -132,67 +136,5 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
           }
 
         );
-  }
-}
-
-// Small reusable nav link widget
-class _NavLink extends StatelessWidget {
-  final String label;
-  final VoidCallback onTap;
-  final bool isSelected;
-
-  const _NavLink({required this.label, required this.onTap, required this.isSelected});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          mainAxisSize: .min,
-          children: [
-            Text(
-              label,
-              style: const TextStyle(
-                color: AppColors.primaryColor,
-                fontSize: 14,
-                fontWeight: .bold
-              ),
-            ),
-            const SizedBox(height: 5),
-            if(isSelected)
-              Container(
-                height: 3,
-                width: getWidth(label.length) , // 35
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              )
-          ],
-        ),
-      ),
-    );
-  }
-
-  double getWidth(int labelLength){
-
-    switch(labelLength){
-
-      case 4:
-        return 35;
-      case 5:
-        return 40;
-      case 6:
-        return 38;
-      case 7:
-        return 50;
-      case 8:
-        return 54;
-      default:
-        return 35;
-    }
-
   }
 }

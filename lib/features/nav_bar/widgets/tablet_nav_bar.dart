@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
+import 'package:flutter7_portfolio/core/utils/url_launcher.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/extensions/media_query_extension.dart';
 import '../../../data/models/nav_bar_model.dart';
+import 'nav_link.dart';
 
 class TabletNavBar extends StatefulWidget {
 
@@ -37,8 +40,10 @@ class _TabletNavBarState extends State<TabletNavBar> {
   @override
   Widget build(BuildContext context) {
 
-    final double ratio = context.sizeOf.width / AppBreakpoints.tablet;
-    final double secondRatio = context.sizeOf.width / (AppBreakpoints.tablet * 0.7);
+    final double ratio = (context.sizeOf.width / AppBreakpoints.tablet * 1.2)
+        .clamp(0.1, 1.0);
+    final double secondRatio = (context.sizeOf.width / (AppBreakpoints.tablet * 0.7))
+        .clamp(0.1, 1.0);
 
     return Container(
       height: 60,
@@ -55,19 +60,16 @@ class _TabletNavBarState extends State<TabletNavBar> {
         children: [
           // Logo
           Text(
-            'NazmulDev',
-            style: TextStyle(
-              color: AppColors.white,
-              fontSize: (18 * secondRatio).clamp(11, 18),
-              fontWeight: FontWeight.bold,
-            ),
+            AppStrings.appTitle,
+            style: AppTextStyles.navBarAppTitle
+                .copyWith(fontSize: 18 * secondRatio)
           ),
 
           SizedBox(width: 25 * ratio),
 
           const Spacer(),
 
-          buildListView(),
+          buildListView(ratio,secondRatio),
 
           Spacer(),
 
@@ -75,7 +77,8 @@ class _TabletNavBarState extends State<TabletNavBar> {
           // Resume button
           FilledButton(
             onPressed: () {
-              debugPrint('Resume button pressed ${context.sizeOf.width}');
+              //debugPrint('Resume button pressed ${context.sizeOf.width}');
+              UrlLauncher.openResume();
             }, // url_launcher later
             style: FilledButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 10 * ratio, horizontal: 10 * ratio),
@@ -85,8 +88,8 @@ class _TabletNavBarState extends State<TabletNavBar> {
               backgroundColor: AppColors.filledButtonColor,
             ),
             child: Text(
-              'Download Resume',
-              style: AppTextStyles.resumeButton.copyWith(fontSize: 14 * ratio)
+              AppStrings.downloadResume,
+              style: AppTextStyles.resumeButton.copyWith(fontSize: 16 * (ratio / 1.1)) /// needs work nav items are much larger
             ),
           ),
         ],
@@ -96,7 +99,7 @@ class _TabletNavBarState extends State<TabletNavBar> {
 
   }
 
-  ListView buildListView() {
+  ListView buildListView(double ratio, double secondRatio) {
     return ListView.builder(
         itemCount: NavBarModel.navItems.length,
         padding: EdgeInsets.only(
@@ -116,13 +119,15 @@ class _TabletNavBarState extends State<TabletNavBar> {
           return ValueListenableBuilder(
               valueListenable: _current,
               builder: (BuildContext context, int value, child) {
-                return _NavLink(
+                return NavLink(
                     label: navItem,
                     isSelected: value == index,
                     onTap: () {
                       _current.value = index;
                       widget.onNavTap(widget.keys[navItem.toLowerCase()]!);
-                    }
+                    },
+                    secondRatio: secondRatio,
+                    ratio: ratio,
                 );
               }
           );
@@ -133,67 +138,3 @@ class _TabletNavBarState extends State<TabletNavBar> {
   }
 }
 
-// Small reusable nav link widget
-class _NavLink extends StatelessWidget {
-  final String label;
-  final VoidCallback onTap;
-  final bool isSelected;
-
-  const _NavLink({required this.label, required this.onTap, required this.isSelected});
-
-  @override
-  Widget build(BuildContext context) {
-
-    final double ratio = context.sizeOf.width / (AppBreakpoints.tablet * 0.7);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          mainAxisSize: .min,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontSize: (14 * ratio).clamp(11, 14),
-                  fontWeight: .bold
-              ),
-            ),
-            const SizedBox(height: 5),
-            if(isSelected)
-              Container(
-                height: 3,
-                width: getWidth(label.length, ratio) , // 35
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              )
-          ],
-        ),
-      ),
-    );
-  }
-
-  double getWidth(int labelLength, double ratio){
-
-    switch(labelLength){
-
-      case 4:
-        return 35 * ratio;
-      case 5:
-        return 40 * ratio;
-      case 6:
-        return 38 * ratio;
-      case 7:
-        return 50 * ratio;
-      case 8:
-        return 54 * ratio;
-      default:
-        return 35 * ratio;
-    }
-
-  }
-}
