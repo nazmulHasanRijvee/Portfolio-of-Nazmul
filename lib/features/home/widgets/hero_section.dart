@@ -1,19 +1,21 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
-import 'package:flutter7_portfolio/core/utils/asset_paths.dart';
-import 'package:flutter7_portfolio/core/utils/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/utils/asset_paths.dart';
+import '../../../core/utils/url_launcher.dart';
 
 class HeroSection extends StatefulWidget {
 
   final VoidCallback onPressed;
 
-  const HeroSection({super.key, required this.onPressed}); // _heroKey is directly assigned no parameter needed
+  const HeroSection({
+    super.key, // _heroKey is directly assigned no parameter needed
+    required this.onPressed
+  });
 
   @override
   State<HeroSection> createState() => _HeroSectionState();
@@ -45,8 +47,10 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
         ).animate(CurvedAnimation(parent: e, curve: Curves.easeInOut))
     ).toList();
 
+    // to show Available for hire green dots fade animation
     _fadeController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
 
+    // fades from 100% to 35%
     _fadeAnimation = Tween<double>(begin: 0.35, end: 1)
         .animate(CurvedAnimation(
         parent: _fadeController, curve: Curves.easeInOut
@@ -95,6 +99,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
 
   }
 
+  /// Desktop
   Widget buildDesktopLayout(double width) {
 
     final ratio = (width / AppBreakpoints.desktop).clamp(0.5, 1.0);
@@ -111,13 +116,14 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
         const Spacer(),
         Expanded(
           flex: 4,
-          child: buildPhotoStack(ratio, false),
+          child: buildPhotoStack(ratio),
         ),
       ],
     ),
     );
   }
 
+  /// Tablet
   Widget buildTabletLayout(double width) {
 
     final ratio = (width / AppBreakpoints.desktop).clamp(0.1, 1.0);
@@ -134,13 +140,14 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
           const Spacer(),
           Expanded(
               flex: 4,
-              child: buildPhotoStack(ratio, false)
+              child: buildPhotoStack(ratio)
           )
         ],
       ),
     );
   }
 
+  /// Transition between tablet to mobile
   Widget buildMiddleLayout(double width) {
 
     final ratio = (width / (AppBreakpoints.desktop * 1.1)).clamp(0.1, 1.0);
@@ -157,13 +164,14 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
           const Spacer(),
           Expanded(
               flex: 4,
-              child: buildPhotoStack(ratio, false)
+              child: buildPhotoStack(ratio)
           )
         ],
       ),
     );
   }
 
+  /// Mobile
   Widget buildMobileLayout(double width) {
 
     final double ratio = (width / AppBreakpoints.mobile).clamp(0.6, 1.0);
@@ -176,14 +184,178 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
           children: [
             buildTextContent(ratio),
             const SizedBox(height: 32),
-            buildPhotoStack(ratio, true)
+            buildPhotoStack(ratio)
           ],
         )
     );
 
   }
 
-  Widget buildPhotoStack(double ratio, bool isMobile) {
+  /// build text content
+  Widget buildTextContent(double ratio) {
+    return Column(
+      mainAxisSize: .min,
+      crossAxisAlignment: .start,
+      children: [
+        /// Available for hire badge
+        buildAvailableForHire(),
+        const SizedBox(height: 25), // dynamic size
+        Text(
+            AppStrings.greeting,
+            style: AppTextStyles.greetingStyle
+                .copyWith(fontSize: (62 * ratio)) // ratio added
+        ),
+        const SizedBox(height: 5), // dynamic size
+        Text(
+            AppStrings.role,
+            style: AppTextStyles.roleStyle
+                .copyWith(fontSize: (32 * ratio))
+        ),
+        const SizedBox(height: 10),
+        buildAboutDescriptionText(ratio),
+        const SizedBox(height: 20),
+        buildButtons(ratio),
+        SizedBox(height: 28 * ratio),
+        buildIconButtons(ratio)
+      ],
+    );
+  }
+
+  // Available for hire badge for text content
+  Container buildAvailableForHire() {
+    return Container(
+        width: 158,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+            color: AppColors.activeContainer,
+            borderRadius: BorderRadius.circular(10)
+        ),
+        child: Row(
+          children: [
+            buildFadeTransition(
+              Container(
+                width: 7,
+                height: 7,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.green
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              AppStrings.hireAvailable,
+              style: AppTextStyles.availableStyle,
+            ),
+          ],
+        )
+    );
+  }
+
+  // Fade transition for Available for hire badge
+  Widget buildFadeTransition(Widget child){
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: child,
+    );
+  }
+
+  // build about description text for text content
+  LayoutBuilder buildAboutDescriptionText(double ratio) {
+    return LayoutBuilder(
+        builder: (BuildContext context, constraints) {
+          final double width = constraints.maxWidth;
+
+          if(width < AppBreakpoints.mobile) {
+            return Text(
+                AppStrings.descriptionForMobileView,
+                style: AppTextStyles.descriptionStyle
+                    .copyWith(fontSize: (22 * ratio))
+            );
+          }
+
+          return Text(
+              AppStrings.description,
+              style: AppTextStyles.descriptionStyle
+                  .copyWith(fontSize: (22 * ratio))
+          );
+        }
+    );
+  }
+
+  // build buttons for text content
+  Row buildButtons(double ratio) {
+    return Row(
+      children: [
+        FilledButton(
+          onPressed: widget.onPressed,
+          style: FilledButton.styleFrom(
+              padding: .symmetric(horizontal: 24 * ratio, vertical: 15 * ratio),
+              backgroundColor: AppColors.primaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusGeometry.circular(4)
+              )
+          ),
+          child: Text(
+              AppStrings.viewProjectsButton,
+              style: AppTextStyles.resumeButton
+                  .copyWith(fontSize: (22 * ratio))
+          ),
+        ),
+        SizedBox(width: 20 * ratio),
+        OutlinedButton(
+          onPressed: () => UrlLauncher.openGitHub(),
+          style: OutlinedButton.styleFrom(
+              padding: .symmetric(horizontal: 40 * ratio, vertical: 15 * ratio),
+              backgroundColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusGeometry.circular(4),
+                  side: BorderSide(width: 1, color: Colors.white)
+              )
+          ),
+          child: Text(
+              AppStrings.gitHubButton,
+              style: AppTextStyles.gitHubStyle
+                  .copyWith(fontSize: (22 * ratio))
+          ),
+        )
+      ],
+    );
+  }
+
+  // build icon buttons for text content
+  Row buildIconButtons(double ratio) {
+    return Row(
+      spacing: 5,
+      children: [
+        buildIconButton(
+            ratio,
+            Icons.code_rounded,
+                () => UrlLauncher.openGitHub()
+        ),
+
+        buildIconButton(
+            ratio,
+            Icons.link_rounded,
+                () => UrlLauncher.openLinkedin()
+        ),
+
+        buildIconButton(
+            ratio,
+            Icons.mail_outline_rounded,
+                () => UrlLauncher.openMail()
+        ),
+      ],
+    );
+  }
+
+  // icon button for build icon buttons
+  IconButton buildIconButton(double ratio, IconData icon, VoidCallback onTap) =>
+      IconButton(onPressed: onTap, icon: Icon(icon, color: Colors.white, size: 30 * ratio));
+
+
+  /// build photo stack
+  Widget buildPhotoStack(double ratio) {
 
     return Row(
       children: [
@@ -247,6 +419,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
 
   }
 
+  // build floating badge for photo stack
   Widget buildFloatingBadge({required IconData icon ,required Color color, required String label, required double ratio}) {
     return Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -272,6 +445,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
             );
   }
 
+  // build flutter badge for photo stack
   Widget buildFlutterBadge(double ratio) {
     return Card(
       color: Colors.transparent,
@@ -301,6 +475,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
+  // build animation for photo stack badges
   Widget buildAnimation({required Animation<double> animation, required Widget child}) {
 
     return AnimatedBuilder(
@@ -311,152 +486,6 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
           child: child,
         );
       },
-      child: child,
-    );
-
-  }
-
-  Widget buildTextContent(double ratio) {
-    return Column(
-      //key: widget.heroKey,
-      mainAxisSize: .min,
-      crossAxisAlignment: .start,
-      children: [
-        /// Available for hire badge
-        buildAvailableForHire(),
-        const SizedBox(height: 25), // dynamic size
-        Text(
-            AppStrings.greeting,
-            style: AppTextStyles.greetingStyle
-                .copyWith(fontSize: (62 * ratio)) // ratio added
-        ), // dynamic size
-        const SizedBox(height: 5), // dynamic size
-        Text(
-            AppStrings.role,
-            style: AppTextStyles.roleStyle
-                .copyWith(fontSize: (32 * ratio))
-        ), // dynamic size
-        const SizedBox(height: 10),
-        LayoutBuilder(
-          builder: (BuildContext context, constraints) {
-            final double width = constraints.maxWidth;
-
-            if(width < AppBreakpoints.mobile) {
-
-              return Text(
-                  AppStrings.descriptionForMobileView,
-                  style: AppTextStyles.descriptionStyle
-                      .copyWith(fontSize: (22 * ratio))
-              );
-
-            }
-
-            return Text(
-                AppStrings.description,
-                style: AppTextStyles.descriptionStyle
-                    .copyWith(fontSize: (22 * ratio))
-            );
-          }
-        ),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            FilledButton(
-              onPressed: widget.onPressed,
-              style: FilledButton.styleFrom(
-                  padding: .symmetric(horizontal: 24 * ratio, vertical: 15 * ratio),
-                  backgroundColor: AppColors.primaryColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(4)
-                  )
-              ),
-              child: Text(
-                  AppStrings.viewProjectsButton,
-                  style: AppTextStyles.resumeButton
-                      .copyWith(fontSize: (22 * ratio))
-              ),
-            ),
-            SizedBox(width: 20 * ratio),
-            OutlinedButton(
-              onPressed: () => UrlLauncher.openGitHub(),
-              style: OutlinedButton.styleFrom(
-                  padding: .symmetric(horizontal: 40 * ratio, vertical: 15 * ratio),
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(4),
-                      side: BorderSide(width: 1, color: Colors.white)
-                  )
-              ),
-              child: Text(
-                  AppStrings.gitHubButton,
-                  style: AppTextStyles.gitHubStyle
-                      .copyWith(fontSize: (22 * ratio))
-              ),
-            )
-          ],
-        ),
-        SizedBox(height: 28 * ratio),
-        Row(
-          children: [
-            buildIconButton(
-                ratio,
-                Icons.code_rounded,
-                () => UrlLauncher.openGitHub()
-            ),
-            const SizedBox(width: 5),
-            buildIconButton(
-                ratio,
-                Icons.link_rounded,
-                () => UrlLauncher.openLinkedin()
-            ),
-            const SizedBox(width: 5),
-            buildIconButton(
-                ratio,
-                Icons.mail_outline_rounded,
-                () => UrlLauncher.openMail()
-            ),
-          ],
-        )
-      ],
-    );
-  }
-
-  IconButton buildIconButton(double ratio, IconData icon, VoidCallback onTap) => IconButton(onPressed: onTap, icon: Icon(icon, color: Colors.white, size: 30 * ratio));
-
-  Container buildAvailableForHire() {
-    return Container(
-          width: 158,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-              color: AppColors.activeContainer,
-              borderRadius: BorderRadius.circular(10)
-          ),
-          child: Row(
-            children: [
-              buildFadeTransition(
-                Container(
-                  width: 7,
-                  height: 7,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.green
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                AppStrings.hireAvailable,
-                style: AppTextStyles.availableStyle,
-              ),
-            ],
-          )
-      );
-  }
-
-  Widget buildFadeTransition(Widget child){
-
-    return FadeTransition(
-      opacity: _fadeAnimation,
       child: child,
     );
 

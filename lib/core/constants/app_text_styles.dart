@@ -9,19 +9,19 @@ class AppTextStyles {
   static const String inter = 'Inter';
   static const String jetBrainsMono = 'JetBrainsMono';
 
-  static TextStyle get testStyle => TextStyle(
+  static TextStyle get testStyle => const TextStyle(
     color: Colors.white
   );
 
 
   /// Nav bar style
-  static TextStyle get navBarAppTitle => TextStyle(
+  static TextStyle get navBarAppTitle => const TextStyle(
     color: AppColors.white,
     fontSize: 18,
     fontWeight: FontWeight.bold,
     fontFamily: spaceGrotesk
   );
-  static TextStyle get navBarItemStyle => TextStyle(
+  static TextStyle get navBarItemStyle => const TextStyle(
       color: AppColors.primaryColor,
       fontSize: 14,
       fontWeight: .w500,

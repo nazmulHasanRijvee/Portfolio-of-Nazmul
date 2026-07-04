@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter7_portfolio/core/utils/svg_precaching.dart';
 
 import 'core/theme/app_theme.dart';
 import 'core/utils/asset_paths.dart';
+import 'core/utils/svg_precaching.dart';
 import 'features/home/screens/home_screen.dart';
 
 
 void main() async {
 
+  // Make sure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Precache Svgs
   await SvgPrecaching.precacheSvgAssets([
     AssetPaths.profile,
     AssetPaths.background
@@ -31,8 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'NazmulDev',
       theme: AppTheme.theme,
       debugShowCheckedModeBanner: false,
-      //initialRoute: HomeScreen.routeName,
-      home: const HomeScreen()
+      home: const HomeScreen() // web doesn't support initialRoute:
     );
   }
 }

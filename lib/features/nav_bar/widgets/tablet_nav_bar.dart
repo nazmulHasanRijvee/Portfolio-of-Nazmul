@@ -58,7 +58,6 @@ class _TabletNavBarState extends State<TabletNavBar> {
       child: Row(
         mainAxisAlignment: .center,
         children: [
-          // Logo
           Text(
             AppStrings.appTitle,
             style: AppTextStyles.navBarAppTitle
@@ -73,13 +72,9 @@ class _TabletNavBarState extends State<TabletNavBar> {
 
           Spacer(),
 
-
           // Resume button
           FilledButton(
-            onPressed: () {
-              //debugPrint('Resume button pressed ${context.sizeOf.width}');
-              UrlLauncher.openResume();
-            }, // url_launcher later
+            onPressed: openResume,
             style: FilledButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 10 * ratio, horizontal: 10 * ratio),
               shape: RoundedRectangleBorder(
@@ -101,40 +96,46 @@ class _TabletNavBarState extends State<TabletNavBar> {
 
   ListView buildListView(double ratio, double secondRatio) {
     return ListView.builder(
-        itemCount: NavBarModel.navItems.length,
-        padding: EdgeInsets.only(
-            top: 20,
-            bottom: 0,
-            left: 0,
-            right: 0
-        ),
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.horizontal,
+      itemCount: NavBarModel.navItems.length,
+      padding: EdgeInsets.only(
+          top: 20,
+          bottom: 0,
+          left: 0,
+          right: 0
+      ),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.horizontal,
 
         itemBuilder: (BuildContext context, int index) {
 
-          final String navItem = NavBarModel.navItems[index];
+        final String navItem = NavBarModel.navItems[index];
 
-          return ValueListenableBuilder(
-              valueListenable: _current,
-              builder: (BuildContext context, int value, child) {
-                return NavLink(
-                    label: navItem,
-                    isSelected: value == index,
-                    onTap: () {
-                      _current.value = index;
-                      widget.onNavTap(widget.keys[navItem.toLowerCase()]!);
-                    },
-                    secondRatio: secondRatio,
-                    ratio: ratio,
-                );
-              }
-          );
-
+        return ValueListenableBuilder(
+            valueListenable: _current,
+            builder: (BuildContext context, int value, child) {
+              return NavLink(
+                label: navItem,
+                isSelected: value == index,
+                onTap: () => onNavLinkTap(index, navItem),
+                secondRatio: secondRatio,
+                ratio: ratio,
+              );
+            }
+            );
         },
 
     );
+  }
+
+  void openResume() {
+    // debugPrint('Resume button pressed ${context.sizeOf.width}');
+    UrlLauncher.openResume();
+  }
+
+  void onNavLinkTap(int index, String navItem){
+    _current.value = index;
+    widget.onNavTap(widget.keys[navItem.toLowerCase()]!);
   }
 }
 

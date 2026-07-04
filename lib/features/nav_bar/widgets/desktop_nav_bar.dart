@@ -41,7 +41,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
   @override
   Widget build(BuildContext context) {
 
-    final double ratio = context.sizeOf.width / AppBreakpoints.desktop;
+    final double ratio = (context.sizeOf.width / AppBreakpoints.desktop).clamp(0.1, 1.1);
 
 
     return Container(
@@ -72,13 +72,9 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
 
           Spacer(),
 
-
           // Resume button
           FilledButton(
-            onPressed: () {
-              // debugPrint('Resume button pressed ${context.sizeOf.width}');
-              UrlLauncher.openResume();
-            }, // url_launcher later
+            onPressed: openResume,
             style: FilledButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
@@ -99,18 +95,18 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
 
   ListView buildListView() {
     return ListView.separated(
-          itemCount: NavBarModel.navItems.length,
-          padding: EdgeInsets.only(
-              top: 20,
-              bottom: 0
-          ),
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
+        itemCount: NavBarModel.navItems.length,
+        padding: EdgeInsets.only(
+            top: 20,
+            bottom: 0
+        ),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
 
-          itemBuilder: (BuildContext context, int index) {
+        itemBuilder: (BuildContext context, int index) {
 
-            return ValueListenableBuilder(
+          return ValueListenableBuilder(
               valueListenable: _current,
               builder: (BuildContext context, int value, child) {
 
@@ -119,13 +115,10 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
                 return NavLink(
                     label: navItem,
                     isSelected: value == index,
-                    onTap: () {
-                      _current.value = index;
-                      widget.onNavTap(widget.keys[navItem.toLowerCase()]!);
-                    }
-                );
+                    onTap: () => onNavLinkTap(index, navItem)
+                    );
               }
-            );
+              );
 
           },
 
@@ -135,6 +128,17 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
 
           }
 
-        );
+          );
   }
+
+  void openResume() {
+    // debugPrint('Resume button pressed ${context.sizeOf.width}');
+    UrlLauncher.openResume();
+  }
+
+  void onNavLinkTap(int index, String navItem){
+    _current.value = index;
+    widget.onNavTap(widget.keys[navItem.toLowerCase()]!);
+  }
+
 }

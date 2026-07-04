@@ -10,14 +10,21 @@ class NavLink extends StatelessWidget {
   final double ratio;
   final double secondRatio;
 
-  const NavLink({super.key, required this.label, required this.onTap, required this.isSelected, this.secondRatio = 1.0, this.ratio = 1.0});
+  const NavLink({
+    super.key,
+    required this.label,
+    required this.onTap,
+    required this.isSelected,
+    this.secondRatio = 1.0, // Default values are given if already not specified
+    this.ratio = 1.0
+  });
 
   @override
   Widget build(BuildContext context) {
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16 * ratio),
-      child: GestureDetector(
+      child: InkWell(
         onTap: onTap,
         child: Column(
           mainAxisSize: .min,

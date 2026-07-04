@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
-import 'package:flutter7_portfolio/features/nav_bar/widgets/desktop_nav_bar.dart';
 
+import '../../../core/constants/app_breakpoints.dart';
+import '../widgets/desktop_nav_bar.dart';
 import '../widgets/mobile_nav_bar.dart';
 import '../widgets/tablet_nav_bar.dart';
 
 class NavBar extends StatelessWidget {
 
+  // State hoisting, defining callbacks to control logic in home screen
   final ValueChanged<GlobalKey> onPressed;
   final Map<String, GlobalKey> keys;
 
