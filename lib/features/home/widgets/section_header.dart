@@ -13,7 +13,7 @@ class SectionHeader extends StatelessWidget {
   const SectionHeader({
     super.key,
     required this.ratio,
-    required this.isMobile,
+    this.isMobile = false,
     this.sectionNumber,
     this.sectionTitle
   });
@@ -28,13 +28,13 @@ class SectionHeader extends StatelessWidget {
         Text(
           sectionNumber ?? AppStrings.aboutMe,
           style: AppTextStyles.aboutMeStyle
-              .copyWith(fontSize: isMobile ? 20 * ratio : 16 * ratio),
+              .copyWith(fontSize: (isMobile ? 20 : 16) * ratio),
         ),
         const SizedBox(height: 10),
         Text(
           sectionTitle ?? AppStrings.aboutPrecision,
           style: AppTextStyles.aboutPrecisionStyle
-              .copyWith(fontSize: isMobile ? 34 * ratio : 30 * ratio),
+              .copyWith(fontSize: (isMobile ? 34 : 30) * ratio),
         ),
       ],
     );

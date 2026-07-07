@@ -10,6 +10,7 @@ import '../../../core/utils/url_launcher.dart';
 
 class HeroSection extends StatefulWidget {
 
+  // the callback to trigger in HomeScreen to scroll to project section
   final VoidCallback onPressed;
 
   const HeroSection({
@@ -23,9 +24,11 @@ class HeroSection extends StatefulWidget {
 
 class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin {
 
+  // List of controllers to show badge floating animation
   late final List<AnimationController> _controllers;
-  late final AnimationController _fadeController;
   late final List<Animation<double>> _animations;
+  // Controller to show available for hires green dot, fade animation
+  late final AnimationController _fadeController;
   late final Animation<double> _fadeAnimation;
 
   @override
@@ -67,7 +70,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
 
   @override
   void dispose() {
-
+    // must dispose controllers
     _fadeController.dispose();
 
     for(final c in _controllers){
@@ -221,7 +224,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
-  // Available for hire badge for text content
+  // Available for hire badge for buildTextContent()
   Container buildAvailableForHire() {
     return Container(
         width: 158,
@@ -252,7 +255,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
-  // Fade transition for Available for hire badge
+  // Fade transition for buildAvailableForHire()
   Widget buildFadeTransition(Widget child){
     return FadeTransition(
       opacity: _fadeAnimation,
@@ -260,7 +263,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
-  // build about description text for text content
+  // build about description text for buildTextContent()
   LayoutBuilder buildAboutDescriptionText(double ratio) {
     return LayoutBuilder(
         builder: (BuildContext context, constraints) {
@@ -283,7 +286,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
-  // build buttons for text content
+  // build buttons for buildTextContent()
   Row buildButtons(double ratio) {
     return Row(
       children: [
@@ -323,7 +326,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
-  // build icon buttons for text content
+  // build icon buttons for buildTextContent
   Row buildIconButtons(double ratio) {
     return Row(
       spacing: 5,
@@ -349,7 +352,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
-  // icon button for build icon buttons
+  // icon button for buildIconButtons()
   IconButton buildIconButton(double ratio, IconData icon, VoidCallback onTap) =>
       IconButton(onPressed: onTap, icon: Icon(icon, color: Colors.white, size: 30 * ratio));
 
@@ -419,7 +422,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
 
   }
 
-  // build floating badge for photo stack
+  // build floating badge for buildPhotoStack()
   Widget buildFloatingBadge({required IconData icon ,required Color color, required String label, required double ratio}) {
     return Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -445,7 +448,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
             );
   }
 
-  // build flutter badge for photo stack
+  // build flutter badge for buildPhotoStack()
   Widget buildFlutterBadge(double ratio) {
     return Card(
       color: Colors.transparent,
@@ -475,7 +478,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
-  // build animation for photo stack badges
+  // build animation for buildPhotoStack() floating badges
   Widget buildAnimation({required Animation<double> animation, required Widget child}) {
 
     return AnimatedBuilder(
