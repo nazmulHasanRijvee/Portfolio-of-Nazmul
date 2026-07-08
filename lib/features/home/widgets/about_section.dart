@@ -102,8 +102,6 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
         crossAxisAlignment: .start,
         mainAxisSize: .min,
         children: [
-          // unpacking list using spread operator
-          // ...buildHeader(ratio, false),
           SectionHeader(ratio: ratio),
           const SizedBox(height: 40),
           Row(
@@ -255,7 +253,7 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
 
               final model = AboutSectionModel.aboutData[index];
 
-              return buildAboutContainer(ratio, model, false);
+              return buildAboutContainer(ratio: ratio, model: model);
             },
             separatorBuilder: (context, index) =>
                 SizedBox(width: (isMiddle? 10 : 50) * (ratio)),
@@ -278,22 +276,22 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
     );
   }
 
-  // build about container for buildAboutDescription()
-  Widget buildAboutContainer(double ratio, AboutSectionEntity model, bool isMiddle) {
+  // build about container for buildAboutDescription() & buildAboutDescriptionForMobile()
+  Widget buildAboutContainer({required double ratio, required AboutSectionEntity model, bool isMobile = false}) { // work on this
 
     return Container(
       padding: .only(
-          left: isMiddle ? 15 * ratio : 40 * ratio, // 15 old
-          top: isMiddle ? 20 * ratio : 30 * ratio,
+          left: (isMobile? 30 : 40) * ratio,
+          top:  (isMobile?  40 : 30) * ratio,
       ),
-      height: isMiddle? 110 * ratio : 120 * ratio,
-      width: isMiddle ? 40 * ratio : 190 * ratio, // 40 old
+      height: (isMobile? 160 : 120) * ratio,
+      width:  (isMobile? 150 : 190) * ratio, // 40 old
       decoration: BoxDecoration(
         color: AppColors.aboutContainer,
         borderRadius: BorderRadiusGeometry.circular(4),
         border: BoxBorder.all(
           color: AppColors.aboutContainerBorder, // Control border color
-          width: 1.0
+          width: 1.0 // 0.5 for mobile if needed
         )
       ),
       child:  Column(
@@ -304,14 +302,14 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
             model.title,
             style: AppTextStyles.aboutContainerTitleStyle
                 .copyWith(
-                fontSize: 24 * ratio
+                fontSize: (isMobile? 28 : 24) * ratio
             ),
           ),
-          SizedBox(height: 10 * ratio),
+          SizedBox(height: (isMobile? 16 : 10) * ratio),
           Text(
             model.subTitle,
             style: AppTextStyles.aboutContainerSubTitleStyle
-                .copyWith(fontSize: 16 * ratio),
+                .copyWith(fontSize: (isMobile? 20 : 16) * ratio),
           )
         ]
       ),
@@ -335,54 +333,12 @@ class _AboutSectionState extends State<AboutSection> with SingleTickerProviderSt
 
             final model = AboutSectionModel.aboutData[index];
 
-            return buildAboutContainerForMobile(ratio, model);
+            return buildAboutContainer(ratio: ratio, model: model, isMobile: true);
           },
           )
         )
       ],
     );
-  }
-
-  // build about container for buildMobileLayout()
-  Widget buildAboutContainerForMobile(double ratio, AboutSectionEntity model) {
-
-    return Container(
-      padding: .only(
-        left: 30 * ratio, // 15 old
-        top:  40 * ratio,
-      ),
-      margin: .symmetric(horizontal: 10),
-      height: 160 * ratio,
-      width:  150 * ratio, // 40 old
-      decoration: BoxDecoration(
-          color: AppColors.aboutContainer,
-          borderRadius: BorderRadiusGeometry.circular(8),
-          border: BoxBorder.all(
-              color: AppColors.border, // Control border color
-              width: 0.5
-          )
-      ),
-      child:  Column(
-          crossAxisAlignment: .start,
-          mainAxisSize: .min,
-          children: [
-            Text(
-              model.title,
-              style: AppTextStyles.aboutContainerTitleStyle
-                  .copyWith(
-                  fontSize: 28 * ratio
-              ),
-            ),
-            SizedBox(height: 16 * ratio),
-            Text(
-              model.subTitle,
-              style: AppTextStyles.aboutContainerSubTitleStyle
-                  .copyWith(fontSize: 20 * ratio),
-            )
-          ]
-      ),
-    );
-
   }
 
 }
