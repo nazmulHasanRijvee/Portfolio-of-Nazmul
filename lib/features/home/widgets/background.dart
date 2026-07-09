@@ -5,6 +5,7 @@ import '../../../core/utils/asset_paths.dart';
 
 class Background extends StatelessWidget {
 
+  // The widget sub tree to show on the background
   final Widget child;
 
   const Background({super.key, required this.child});

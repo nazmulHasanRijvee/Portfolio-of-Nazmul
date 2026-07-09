@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter7_portfolio/core/constants/app_strings.dart';
-import 'package:flutter7_portfolio/core/constants/app_text_styles.dart';
-import 'package:flutter7_portfolio/core/utils/url_launcher.dart';
-import 'package:flutter7_portfolio/features/home/widgets/section_header.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_strings.dart';
+import '../../../core/constants/app_text_styles.dart';
 import '../../../core/utils/asset_paths.dart';
+import '../../../core/utils/url_launcher.dart';
 import '../../../data/models/project_section_model.dart';
+import 'section_header.dart';
 
 class ProjectSection extends StatefulWidget {
-  const ProjectSection({super.key});
+  const ProjectSection({super.key}); // _projectsKey is directly assigned
 
   @override
   State<ProjectSection> createState() => _ProjectSectionState();
@@ -18,6 +18,7 @@ class ProjectSection extends StatefulWidget {
 
 class _ProjectSectionState extends State<ProjectSection> with TickerProviderStateMixin {
 
+  // Animation Controller to show zoom in effects in images
   late final List<AnimationController> _animationControllers;
   late final List<Animation<double>> _animations;
 
@@ -41,7 +42,7 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
 
   @override
   void dispose() {
-    // _controller.dispose();
+    // must dispose all controllers
     for(final c in _animationControllers){
       c.dispose();
     }
@@ -68,6 +69,8 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
 
   }
 
+
+  /// Desktop
   Widget buildDesktopLayout(double width) {
 
     final ratio = (width / AppBreakpoints.desktop).clamp(0.5, 1.0);
@@ -80,15 +83,14 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
             children: [
               SectionHeader(
                   ratio: ratio,
-                  isMobile: false,
                   sectionNumber: AppStrings.projects,
                   sectionTitle: AppStrings.projectDetails,
               ),
               const SizedBox(height: 60),
-              buildProjectOne(ratio, false),
+              buildProjectOne(ratio: ratio),
               const SizedBox(height: 40),
               Flexible(
-                  child: buildGrid(ratio, false)
+                  child: buildGrid(ratio: ratio)
               )
             ]
         )
@@ -96,6 +98,8 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
 
   }
 
+
+  /// Tablet
   Widget buildTabletLayout(double width){
 
     /// NOTE: Best practice usage bool isTablet but minimal only where absolutely needed
@@ -116,10 +120,10 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
                 sectionTitle: AppStrings.projectDetails,
               ),
               const SizedBox(height: 60),
-              buildProjectOne(ratio, true),
+              buildProjectOne(ratio: ratio, isTablet: true),
               const SizedBox(height: 40),
               Flexible(
-                  child: buildGrid(ratio, true)
+                  child: buildGrid(ratio: ratio, isTablet:  true)
               )
             ]
         )
@@ -127,14 +131,10 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
 
   }
 
-  Widget buildProjectOne(double ratio, bool isTablet) {
-    return MouseRegion(
-      onHover: (event) {
-        _animationControllers[3].forward();
-      },
-      onExit: (event) {
-        _animationControllers[3].reverse();
-      },
+
+  /// build project one for tablet and desktop
+  Widget buildProjectOne({required double ratio, bool isTablet = false}) {
+    return mouseRegionForOne(
       child: Container(
         padding: .zero,
         alignment: .centerStart,
@@ -168,126 +168,98 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
     );
   }
 
-  Widget buildProjectOneDescription(double ratio, bool isTablet) {
-    return Column(
-                crossAxisAlignment: .start,
-                mainAxisSize: .min,
-                children: [
-                  Row(
-                    mainAxisSize: .min,
-                    mainAxisAlignment: .start,
-                    crossAxisAlignment: .start,
-                    children: [
-                      Text(
-                        ProjectSectionModel.projectOne.title,
-                        style: AppTextStyles.projectOneTitle
-                            .copyWith(fontSize: isTablet ? 20 * ratio : 26 * ratio),
-                      ),
-                      const Spacer(flex: 7,),
-                      Icon(
-                        Icons.code_rounded,
-                        color: Colors.white54,
-                        size: isTablet ? 20 * ratio : 26 * ratio,
-                      ),
-                      const Spacer(flex: 3,),
-                    ],
-                  ),
-                  SizedBox(height: 38 * ratio),
-                  SizedBox(
-                    width: 500 * ratio,
-                    child: Text(
-                      ProjectSectionModel.projectOne.description,
-                      style: AppTextStyles.projectOneDescription
-                          .copyWith(fontSize: 16 * ratio), /// Mark
-                    ),
-                  ),
-                  SizedBox(height: 30 * ratio),
-                  buildProjectOneTags(ratio, isTablet),
-                  SizedBox(height: 35 * ratio),
-                  FilledButton(
-                    onPressed: () => UrlLauncher.openLLMApp(),
-                    style: FilledButton.styleFrom(
-                      padding: .symmetric(horizontal: 48 * ratio, vertical: 16 * ratio),
-                      backgroundColor: AppColors.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                    ),
-                    child: Text(
-                      AppStrings.projectOneDetails,
-                      style: AppTextStyles.projectOneButton
-                          .copyWith(fontSize: 16 * ratio),
-                    ),
-                  )
-                ]
-            );
-  }
-
-  Widget buildProjectOneTags(double ratio, bool isTablet) {
-
-    final tagList = ProjectSectionModel.projectOne.tags;
-
-    return Wrap(
-      spacing: 12 * ratio,
-      children: List.generate(tagList.length,
-          (int index) =>
-              Container(
-                padding: .symmetric(horizontal: 12 * ratio, vertical: 6 * ratio),
-                decoration: BoxDecoration(
-                  color: AppColors.projectOneTag,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: AppColors.primaryColor.withValues(alpha: 0.5),
-                    width: 0.4
-                  )
-                ),
-                child: Text(
-                  tagList[index],
-                  style: AppTextStyles.projectOneTag
-                      .copyWith(fontSize: 14 * ratio),
-                ),
-              )
-      )
+  // build mouse region for buildProjectOne()
+  Widget mouseRegionForOne({required Widget child}) {
+    return MouseRegion(
+      onHover: (event) {
+        _animationControllers[3].forward();
+      },
+      onExit: (event) {
+        _animationControllers[3].reverse();
+      },
+      child: child
     );
   }
 
-  Widget buildAnimation({ required Widget child, required Animation<double> animation}) {
-
-    return RepaintBoundary(
-      child: AnimatedBuilder(
-          animation: animation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: animation.value,
-              child: child,
-            );
-          },
-        child: child,
-      ),
-    );
-
-  }
-
+  // build project one image for buildProjectOne()
   Widget buildProjectOneImage(double ratio) {
     return SizedBox(
-            width: 620 * ratio,
-            height: 520 * ratio,
-            child: ClipRRect(
-              borderRadius: .circular(4),
-              child: buildAnimation(
-                  animation: _animations[3],
-                  child: Image.asset(
-                    AssetPaths.projectOne,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                    isAntiAlias: true,
-                  ),
-              )
+      width: 620 * ratio,
+      height: 520 * ratio,
+      child: ClipRRect(
+          borderRadius: .circular(4),
+          child: buildAnimation(
+            animation: _animations[3],
+            child: Image.asset(
+              AssetPaths.projectOne,
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+              isAntiAlias: true,
             ),
-          );
+          )
+      ),
+    );
   }
 
-  Widget buildGrid(double ratio, bool isTablet) {
+  // build project one description for buildProjectOne()
+  Widget buildProjectOneDescription(double ratio, bool isTablet) {
+    return Column(
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
+        children: [
+          Row(
+            mainAxisSize: .min,
+            mainAxisAlignment: .start,
+            crossAxisAlignment: .start,
+            children: [
+              Text(
+                ProjectSectionModel.projectOne.title,
+                style: AppTextStyles.projectOneTitle
+                    .copyWith(fontSize: isTablet ? 20 * ratio : 26 * ratio),
+              ),
+              const Spacer(flex: 7,),
+              Icon(
+                Icons.code_rounded,
+                color: Colors.white54,
+                size: isTablet ? 20 * ratio : 26 * ratio,
+              ),
+              const Spacer(flex: 3,),
+            ],
+          ),
+          SizedBox(height: 38 * ratio),
+          SizedBox(
+            width: 500 * ratio,
+            child: Text(
+              ProjectSectionModel.projectOne.description,
+              style: AppTextStyles.projectOneDescription
+                  .copyWith(fontSize: 16 * ratio), /// Mark
+            ),
+          ),
+          SizedBox(height: 30 * ratio),
+          buildProjectOneTags(ratio, isTablet),
+          SizedBox(height: 35 * ratio),
+          FilledButton(
+            onPressed: () => UrlLauncher.openLLMApp(),
+            style: FilledButton.styleFrom(
+              padding: .symmetric(horizontal: 48 * ratio, vertical: 16 * ratio),
+              backgroundColor: AppColors.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+            child: Text(
+              AppStrings.projectOneDetails,
+              style: AppTextStyles.projectOneButton
+                  .copyWith(fontSize: 16 * ratio),
+            ),
+          )
+        ]
+    );
+  }
+
+
+  /// build sub project grids for desktop and tablet
+  Widget buildGrid({required double ratio, bool isTablet = false}) {
     return GridView.builder(
         clipBehavior: .none,
         shrinkWrap: true,
@@ -306,25 +278,17 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
 
           final model = ProjectSectionModel.bottomProjects[index];
 
-          return MouseRegion(
-            onEnter: (event) {
-              _animationControllers[index].forward();
-            },
-            onExit: (event) {
-              _animationControllers[index].reverse();
-            },
-            child: InkWell(
-              onTap: () => UrlLauncher.openSubproject(index),
-              child: Stack(
-                children: [
-                  buildSubProjectContainer(index: index, ratio: ratio, model: model),
-                  Positioned(
-                      top: 10,
-                      right: 10,
-                      child: buildCodeIcon(ratio)
-                  )
-                ],
-              ),
+          return mouseRegionForSubProjects(
+            index: index,
+            child: Stack(
+              children: [
+                buildSubProjectContainer(index: index, ratio: ratio, model: model),
+                Positioned(
+                    top: 10,
+                    right: 10,
+                    child: buildCodeIcon(ratio)
+                )
+              ],
             ),
           );
 
@@ -332,104 +296,24 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
     );
   }
 
-  Widget buildCodeIcon(double ratio) {
-    return Container(
-      padding: .symmetric(horizontal: 12 * ratio, vertical: 6 * ratio),
-      decoration: BoxDecoration(
-          color: AppColors.skillContainer,
-          borderRadius: BorderRadius.circular(6)
-      ),
-      child: Icon(
-        Icons.code_rounded,
-        color: Colors.white70,
-        size: 20,
-      ),
-    );
-  }
-
-  Container buildSubProjectContainer({required int index, required double ratio, required ProjectSectionEntity model, bool isMobile = false}) {
-    return Container(
-      padding: isMobile ? .only(bottom: 30 * ratio) : .zero,
-      alignment: .topStart,
-      decoration: BoxDecoration(
-          color: AppColors.skillContainer,
-          borderRadius: BorderRadius.circular(2)
-      ),
-      child: Column(
-          mainAxisSize: .min,
-          crossAxisAlignment: .start,
-          children: [
-            buildAnimation(
-              animation: _animations[index],
-              child: Image.asset(
-                ProjectSectionModel.bottomProjects[index].imageUrl,
-                width: double.maxFinite * ratio,
-                height: 200 * ratio,
-                fit: .cover,
-              ),
-            ),
-            SizedBox(height: 40 * ratio),
-            buildSubProjectDescription(ratio, model, isMobile)
-          ]
+  // build mouseRegion for sub projects in buildGrid() and buildListForMobile()
+  Widget mouseRegionForSubProjects({required int index, required Widget child}) {
+    return MouseRegion(
+      onEnter: (event) {
+        _animationControllers[index].forward();
+      },
+      onExit: (event) {
+        _animationControllers[index].reverse();
+      },
+      child: InkWell(
+        onTap: () => UrlLauncher.openSubproject(index),
+        child: child
       ),
     );
   }
 
-  Widget buildSubProjectDescription(double ratio, ProjectSectionEntity model, bool isMobile) {
 
-    return Padding(
-      padding: EdgeInsets.only(left: isMobile? 32.0 * ratio : 24.0 * ratio),
-      child: Column(
-          crossAxisAlignment: .start,
-          mainAxisSize: .min,
-          children: [
-            Text(
-              model.title,
-              style: AppTextStyles.projectOneTitle
-                  .copyWith(fontSize: isMobile ? 24 * ratio :  20 * ratio),
-            ),
-            SizedBox(height: 24 * ratio),
-            SizedBox(
-              width: isMobile? 470 * ratio : 370 * ratio,
-              child: Text(
-                model.description,
-                style: AppTextStyles.projectOneDescription
-                    .copyWith(fontSize: isMobile ? 18 * ratio : 14 * ratio), /// Mark for mobile old 20
-              ),
-            ),
-            SizedBox(height: 20 * ratio),
-            buildSubProjectTags(ratio, model.tags)
-          ]
-      ),
-    );
-
-  }
-
-  Widget buildSubProjectTags(double ratio, List<String> tagList) {
-
-
-    return Wrap(
-        spacing: 12 * ratio,
-        children: List.generate(tagList.length,
-                (int index) =>
-                Container(
-                  padding: .symmetric(horizontal: 12 * ratio, vertical: 6 * ratio),
-                  decoration: BoxDecoration(
-                    color: AppColors.subProjectTag,
-                    borderRadius: BorderRadius.circular(3),
-
-                  ),
-                  child: Text(
-                    tagList[index],
-                    style: AppTextStyles.projectOneTag
-                        .copyWith(fontSize: 14 * ratio, color: Colors.white),
-                  ),
-                )
-        )
-    );
-  }
-
-  /// Mobile layout
+  /// Mobile
   Widget buildMobileLayout(double width){
 
     final ratio = (width / AppBreakpoints.mobile).clamp(0.5, 1.0);
@@ -458,14 +342,10 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
 
   }
 
+
+  /// build project one for mobile
   Widget buildProjectOneForMobile(double ratio) {
-    return MouseRegion(
-      onHover: (event) {
-        _animationControllers[3].forward();
-      },
-      onExit: (event) {
-        _animationControllers[3].reverse();
-      },
+    return mouseRegionForOne(
       child: Container(
         padding: .zero,
         alignment: .centerStart,
@@ -496,6 +376,7 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
     );
   }
 
+  // build project one description for buildProjectOneForMobile()
   Widget buildProjectOneDescriptionForMobile(double ratio) {
     return Column(
         crossAxisAlignment: .start,
@@ -540,7 +421,7 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
             style: FilledButton.styleFrom(
               padding: .symmetric(horizontal: 48 * ratio, vertical: 16 * ratio),
               backgroundColor: AppColors.primaryColor,
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.elliptical(5, 8)),
               ),
             ),
@@ -554,6 +435,37 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
     );
   }
 
+  // build project one tags for buildProjectOneDescription() and buildProjectOneDescriptionForMobile()
+  Widget buildProjectOneTags(double ratio, bool isTablet) {
+
+    final tagList = ProjectSectionModel.projectOne.tags;
+
+    return Wrap(
+        spacing: 12 * ratio,
+        children: List.generate(tagList.length,
+                (int index) =>
+                Container(
+                  padding: .symmetric(horizontal: 12 * ratio, vertical: 6 * ratio),
+                  decoration: BoxDecoration(
+                      color: AppColors.projectOneTag,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                          color: AppColors.primaryColor.withValues(alpha: 0.5),
+                          width: 0.4
+                      )
+                  ),
+                  child: Text(
+                    tagList[index],
+                    style: AppTextStyles.projectOneTag
+                        .copyWith(fontSize: 14 * ratio),
+                  ),
+                )
+        )
+    );
+  }
+
+
+  /// build sub project as list for mobile
   Widget buildListForMobile(double ratio) {
     return ListView.separated(
         clipBehavior: .none,
@@ -565,30 +477,141 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
 
           final model = ProjectSectionModel.bottomProjects[index];
 
-          return MouseRegion(
-            onEnter: (event) {
-              _animationControllers[index].forward();
-            },
-            onExit: (event) {
-              _animationControllers[index].reverse();
-            },
-            child: InkWell(
-              onTap: () => UrlLauncher.openSubproject(index),
-              child: Stack(
-                children: [
-                  buildSubProjectContainer(index: index, ratio: ratio, model: model, isMobile: true),
-                  Positioned(
-                      top: 10,
-                      right: 10,
-                      child: buildCodeIcon(ratio)
-                  )
-                ],
-              ),
+          return mouseRegionForSubProjects(
+            index: index,
+            child: Stack(
+              children: [
+                buildSubProjectContainer(index: index, ratio: ratio, model: model, isMobile: true),
+                Positioned(
+                    top: 10,
+                    right: 10,
+                    child: buildCodeIcon(ratio)
+                )
+              ],
             ),
           );
 
         },
         separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 25),
+    );
+  }
+
+  // build code icon for buildGrid() and buildListForMobile()
+  Widget buildCodeIcon(double ratio) {
+    return Container(
+      padding: .symmetric(horizontal: 12 * ratio, vertical: 6 * ratio),
+      decoration: BoxDecoration(
+          color: AppColors.skillContainer,
+          borderRadius: BorderRadius.circular(6)
+      ),
+      child: const Icon(
+        Icons.code_rounded,
+        color: Colors.white70,
+        size: 20,
+      ),
+    );
+  }
+
+  // build sub projects container for buildGrid() and buildListForMobile()
+  Container buildSubProjectContainer({required int index, required double ratio, required ProjectSectionEntity model, bool isMobile = false}) {
+    return Container(
+      padding: isMobile ? .only(bottom: 30 * ratio) : .zero,
+      alignment: .topStart,
+      decoration: BoxDecoration(
+          color: AppColors.skillContainer,
+          borderRadius: BorderRadius.circular(2)
+      ),
+      child: Column(
+          mainAxisSize: .min,
+          crossAxisAlignment: .start,
+          children: [
+            buildAnimation(
+              animation: _animations[index],
+              child: Image.asset(
+                ProjectSectionModel.bottomProjects[index].imageUrl,
+                width: double.maxFinite * ratio,
+                height: 200 * ratio,
+                fit: .cover,
+              ),
+            ),
+            SizedBox(height: 40 * ratio),
+            buildSubProjectDescription(ratio, model, isMobile)
+          ]
+      ),
+    );
+  }
+
+  // build animation for buildProjectOneImage() and buildSubProjectContainer()
+  Widget buildAnimation({ required Widget child, required Animation<double> animation}) {
+
+    return RepaintBoundary(
+      child: AnimatedBuilder(
+        animation: animation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: animation.value,
+            child: child,
+          );
+        },
+        child: child,
+      ),
+    );
+
+  }
+
+  // build sub project description for buildSubProjectContainer()
+  Widget buildSubProjectDescription(double ratio, ProjectSectionEntity model, bool isMobile) {
+
+    return Padding(
+      padding: EdgeInsets.only(left: isMobile? 32.0 * ratio : 24.0 * ratio),
+      child: Column(
+          crossAxisAlignment: .start,
+          mainAxisSize: .min,
+          children: [
+            Text(
+              model.title,
+              style: AppTextStyles.projectOneTitle
+                  .copyWith(fontSize: isMobile ? 24 * ratio :  20 * ratio),
+            ),
+            SizedBox(height: 24 * ratio),
+            SizedBox(
+              width: isMobile? 470 * ratio : 370 * ratio,
+              child: Text(
+                model.description,
+                style: AppTextStyles.projectOneDescription
+                    .copyWith(fontSize: isMobile ? 18 * ratio : 14 * ratio), /// Mark for mobile old 20
+              ),
+            ),
+            SizedBox(height: 20 * ratio),
+            buildSubProjectTags(ratio, model.tags)
+          ]
+      ),
+    );
+
+  }
+
+  // build sub project tags for buildSubProjectDescription()
+  Widget buildSubProjectTags(double ratio, List<String> tagList) {
+
+
+    return Wrap(
+        spacing: 12 * ratio,
+        children: List.generate(tagList.length,
+                (int index) =>
+                Container(
+                  padding: .symmetric(horizontal: 12 * ratio, vertical: 6 * ratio),
+                  decoration: BoxDecoration(
+                    color: AppColors.subProjectTag,
+                    borderRadius: BorderRadius.circular(3),
+
+                  ),
+                  child: Text(
+                    tagList[index],
+                    style: AppTextStyles.projectOneTag
+                        .copyWith(fontSize: 14 * ratio, color: Colors.white),
+                  ),
+                )
+        )
     );
   }
 

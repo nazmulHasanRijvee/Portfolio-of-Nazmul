@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter7_portfolio/core/extensions/media_query_extension.dart';
-import 'package:flutter7_portfolio/features/home/widgets/about_section.dart';
-import 'package:flutter7_portfolio/features/home/widgets/hero_section.dart';
-import 'package:flutter7_portfolio/features/home/widgets/skill_section.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
+import '../../../core/extensions/media_query_extension.dart';
 import '../../nav_bar/screens/nav_bar.dart';
+import '../widgets/about_section.dart';
 import '../widgets/background.dart';
 import '../widgets/contact_section.dart';
+import '../widgets/hero_section.dart';
 import '../widgets/project_section.dart';
+import '../widgets/skill_section.dart';
 
 class HomeScreen extends StatefulWidget{
-
-  static const String routeName = '/home';
 
   const HomeScreen({super.key});
 
@@ -22,11 +20,11 @@ class HomeScreen extends StatefulWidget{
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  final GlobalKey _heroKey = GlobalKey();
-  final GlobalKey _aboutKey = GlobalKey();
-  final GlobalKey _skillsKey = GlobalKey();
-  final GlobalKey _projectsKey = GlobalKey();
-  final GlobalKey _contactKey = GlobalKey();
+  late final GlobalKey _heroKey;
+  late final GlobalKey _aboutKey;
+  late final GlobalKey _skillsKey;
+  late final GlobalKey _projectsKey;
+  late final GlobalKey _contactKey;
 
   // Step 2: ScrollController for the page
   final ScrollController _scrollController = ScrollController();
@@ -42,6 +40,16 @@ class _HomeScreenState extends State<HomeScreen> {
       curve: Curves.easeInOut,
       alignment: 0.0, // 0.0 = top of viewport, 0.5 = center
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _heroKey = GlobalKey();
+    _aboutKey = GlobalKey();
+    _skillsKey = GlobalKey();
+    _projectsKey = GlobalKey();
+    _contactKey = GlobalKey();
   }
 
   @override
@@ -113,11 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 150),
 
-                    // Text(
-                    //     'Contact Section',
-                    //   key: _contactKey,
-                    //   style: AppTextStyles.testStyle,
-                    // )
                     ContactSection(key: _contactKey),
 
                   ]

@@ -24,7 +24,7 @@ class _MobileNavBarState extends State<MobileNavBar> {
   @override
   Widget build(BuildContext context) {
 
-    final double ratio = context.sizeOf.width / AppBreakpoints.mobile;
+    final double ratio = (context.sizeOf.width / AppBreakpoints.mobile).clamp(0.1, 1.0);
     final double secondRatio = (context.sizeOf.width / (AppBreakpoints.mobile * 0.7))
         .clamp(0.1, 1.0);
 
@@ -33,7 +33,7 @@ class _MobileNavBarState extends State<MobileNavBar> {
       padding: EdgeInsets.symmetric(horizontal: 38 * ratio,),
       decoration: BoxDecoration(
         color: AppColors.background.withValues(alpha: 0.95),
-        border: Border(
+        border: const Border(
           bottom: BorderSide(color: AppColors.border, width: 0.5),
         ),
       ),
@@ -41,7 +41,6 @@ class _MobileNavBarState extends State<MobileNavBar> {
       child: Row(
         mainAxisAlignment: .center,
         children: [
-          // Logo
           Text(
             AppStrings.appTitle,
             style: AppTextStyles.navBarAppTitle
@@ -50,13 +49,9 @@ class _MobileNavBarState extends State<MobileNavBar> {
 
           const Spacer(),
 
-
           // Resume button
           FilledButton(
-            onPressed: () {
-              // debugPrint('Resume button pressed ${context.sizeOf.width}');
-              UrlLauncher.openResume();
-            }, // url_launcher later
+            onPressed: openResume,
             style: FilledButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 15 * ratio, horizontal: 40 * ratio),
               shape: RoundedRectangleBorder(
@@ -75,5 +70,11 @@ class _MobileNavBarState extends State<MobileNavBar> {
     );
 
   }
+
+  void openResume() {
+    // debugPrint('Resume button pressed ${context.sizeOf.width}');
+    UrlLauncher.openResume();
+  }
+
 
 }

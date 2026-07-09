@@ -25,7 +25,7 @@ class UrlLauncher {
       openUrl('https://mail.google.com/mail/u/0/?fs=1&to=nhasanr18@gmail.com&su=SUBJECT&body=BODY&tf=cm');
 
   static Future<void> openResume() =>  // updated the link every time you update CV
-  openUrl('https://drive.google.com/file/d/1zxBn7I9jHtkGPi7qNGiYbdRTbysj9hz4/view?usp=sharing');
+  openUrl('https://drive.google.com/file/d/1HQU_tkiJmKmdq1jYMwtDdLl2nPsQ_DzJ/view?usp=sharing');
 
   static Future<void> openLLMApp () =>
       openUrl('https://github.com/nazmulHasanRijvee/LLM-Based-Chat-Bot-App.git');
