@@ -228,7 +228,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
   Container buildAvailableForHire() {
     return Container(
         width: 158,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
             color: AppColors.activeContainer,
             borderRadius: BorderRadius.circular(10)
@@ -239,7 +239,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
               Container(
                 width: 7,
                 height: 7,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.green
                 ),
@@ -313,7 +313,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
               backgroundColor: Colors.transparent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadiusGeometry.circular(4),
-                  side: BorderSide(width: 1, color: Colors.white)
+                  side: const BorderSide(width: 1, color: Colors.white)
               )
           ),
           child: Text(

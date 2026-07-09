@@ -33,7 +33,7 @@ class _MobileNavBarState extends State<MobileNavBar> {
       padding: EdgeInsets.symmetric(horizontal: 38 * ratio,),
       decoration: BoxDecoration(
         color: AppColors.background.withValues(alpha: 0.95),
-        border: Border(
+        border: const Border(
           bottom: BorderSide(color: AppColors.border, width: 0.5),
         ),
       ),

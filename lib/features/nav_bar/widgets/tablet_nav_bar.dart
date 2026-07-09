@@ -50,7 +50,7 @@ class _TabletNavBarState extends State<TabletNavBar> {
       padding: EdgeInsets.symmetric(horizontal: 38 * ratio),
       decoration: BoxDecoration(
         color: AppColors.background.withValues(alpha: 0.95),
-        border: Border(
+        border: const Border(
           bottom: BorderSide(color: AppColors.border, width: 0.6),
         ),
       ),
@@ -70,7 +70,7 @@ class _TabletNavBarState extends State<TabletNavBar> {
 
           buildListView(ratio,secondRatio),
 
-          Spacer(),
+          const Spacer(),
 
           // Resume button
           FilledButton(
@@ -97,7 +97,7 @@ class _TabletNavBarState extends State<TabletNavBar> {
   ListView buildListView(double ratio, double secondRatio) {
     return ListView.builder(
       itemCount: NavBarModel.navItems.length,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
           top: 20,
           bottom: 0,
           left: 0,

@@ -421,7 +421,7 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
             style: FilledButton.styleFrom(
               padding: .symmetric(horizontal: 48 * ratio, vertical: 16 * ratio),
               backgroundColor: AppColors.primaryColor,
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.elliptical(5, 8)),
               ),
             ),
@@ -504,7 +504,7 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
           color: AppColors.skillContainer,
           borderRadius: BorderRadius.circular(6)
       ),
-      child: Icon(
+      child: const Icon(
         Icons.code_rounded,
         color: Colors.white70,
         size: 20,

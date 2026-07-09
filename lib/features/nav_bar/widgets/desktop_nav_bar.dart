@@ -49,7 +49,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
       padding: const EdgeInsets.symmetric(horizontal: 48),
       decoration: BoxDecoration(
         color: AppColors.background.withValues(alpha: 0.95),
-        border: Border(
+        border: const Border(
           bottom: BorderSide(color: AppColors.border, width: 0.8),
         ),
       ),
@@ -70,7 +70,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
 
           buildListView(),
 
-          Spacer(),
+          const Spacer(),
 
           // Resume button
           FilledButton(
@@ -96,7 +96,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
   ListView buildListView() {
     return ListView.separated(
         itemCount: NavBarModel.navItems.length,
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
             top: 20,
             bottom: 0
         ),

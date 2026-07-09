@@ -27,53 +27,53 @@ class AppTextStyles {
       fontWeight: .w500,
       fontFamily: jetBrainsMono
   );
-  static TextStyle get resumeButton => TextStyle(
+  static TextStyle get resumeButton => const TextStyle(
       color: AppColors.textSecondary,
       fontWeight: .w800,
       fontFamily: jetBrainsMono
   );
 
-  static TextStyle get availableStyle => TextStyle(
+  static TextStyle get availableStyle => const TextStyle(
     color: Colors.white,
     fontWeight: .w400,
     fontSize: 10,
     fontFamily: jetBrainsMono
   );
 
-  static TextStyle get greetingStyle => TextStyle(
+  static TextStyle get greetingStyle => const TextStyle(
       color: Colors.white,
       fontWeight: .w700,
       fontSize: 62,
       fontFamily: 'SpaceGrotesk'
   );
 
-  static TextStyle get roleStyle => TextStyle(
+  static TextStyle get roleStyle => const TextStyle(
     color: AppColors.primaryColor,
     fontWeight: .bold,
     fontSize: 32,
     fontFamily: spaceGrotesk
   );
 
-  static TextStyle get descriptionStyle => TextStyle(
+  static TextStyle get descriptionStyle => const TextStyle(
       color: Colors.white70,
       fontWeight: .w500,
       fontSize: 22,
       fontFamily: 'Inter'
   );
 
-  static TextStyle get viewProjectsStyle => TextStyle(
+  static TextStyle get viewProjectsStyle => const TextStyle(
     color: AppColors.textSecondary,
     fontWeight: .w300
   );
 
-  static TextStyle get gitHubStyle => TextStyle(
+  static TextStyle get gitHubStyle => const TextStyle(
     color: Colors.white,
     fontWeight: .w300,
     fontFamily: jetBrainsMono
   );
 
   /// Hero section
-  static TextStyle get badgeStyle => TextStyle(
+  static TextStyle get badgeStyle => const TextStyle(
     color: Colors.white,
     fontSize: 12,
     fontFamily: jetBrainsMono
@@ -81,7 +81,7 @@ class AppTextStyles {
 
 
   /// About section
-  static TextStyle get aboutMeStyle => TextStyle(
+  static TextStyle get aboutMeStyle => const TextStyle(
     color: AppColors.primaryColor,
     fontWeight: .w500,
     fontSize: 16,
@@ -99,13 +99,13 @@ class AppTextStyles {
     fontSize: 20,
     fontFamily: inter
   );
-  static TextStyle get aboutContainerTitleStyle => TextStyle(
+  static TextStyle get aboutContainerTitleStyle => const TextStyle(
     color: AppColors.primaryColor,
     fontWeight: .w700,
     fontSize: 24,
     fontFamily: spaceGrotesk
   );
-  static TextStyle get aboutContainerSubTitleStyle => TextStyle(
+  static TextStyle get aboutContainerSubTitleStyle => const TextStyle(
       color: Colors.white70,
       fontWeight: .w600,
       fontSize: 16,
@@ -113,13 +113,13 @@ class AppTextStyles {
   );
 
    /// Skill section
-  static TextStyle get skillLabelStyle => TextStyle(
+  static TextStyle get skillLabelStyle => const TextStyle(
     color: Colors.white70,
     fontWeight: .w700,
     fontSize: 26,
     fontFamily: spaceGrotesk
   );
-  static TextStyle get subSkillStyle => TextStyle(
+  static TextStyle get subSkillStyle => const TextStyle(
       color: Colors.white70,
       fontWeight: .w600,
       fontSize: 16,
@@ -127,25 +127,25 @@ class AppTextStyles {
   );
 
   /// Project Section
-  static TextStyle get projectOneTitle => TextStyle(
+  static TextStyle get projectOneTitle => const TextStyle(
     color: Colors.white,
     fontWeight: .w700,
     fontSize: 20,
     fontFamily: spaceGrotesk
   );
-  static TextStyle get projectOneDescription => TextStyle(
+  static TextStyle get projectOneDescription => const TextStyle(
     color: Colors.white70,
     fontWeight: .w500,
     fontSize: 16,
     fontFamily: inter
   );
-  static TextStyle get projectOneTag => TextStyle(
+  static TextStyle get projectOneTag => const TextStyle(
       color: AppColors.primaryColor,
       fontWeight: .w300,
       fontSize: 14,
       fontFamily: jetBrainsMono
   );
-  static TextStyle get projectOneButton => TextStyle(
+  static TextStyle get projectOneButton => const TextStyle(
     color: AppColors.textSecondary,
     fontWeight: .w800,
     fontSize: 16,
@@ -153,25 +153,25 @@ class AppTextStyles {
   );
 
   /// Contact Section
-  static TextStyle get contactTitle => TextStyle(
+  static TextStyle get contactTitle => const TextStyle(
       color: Colors.white70,
       fontWeight: .w800,
       fontSize: 20,
       fontFamily: spaceGrotesk
   );
-  static TextStyle get contactDescription => TextStyle(
+  static TextStyle get contactDescription => const TextStyle(
       color: Colors.white54,
       fontWeight: .w600,
       fontSize: 16,
       fontFamily: jetBrainsMono
   );
-  static TextStyle get finalTitle => TextStyle(
+  static TextStyle get finalTitle => const TextStyle(
     color: Colors.white,
     fontWeight: .w400,
     fontSize: 16,
     fontFamily: inter
   );
-  static TextStyle get finalDescription => TextStyle(
+  static TextStyle get finalDescription => const TextStyle(
       color: Colors.white70,
       fontWeight: .w500,
       fontSize: 14,
