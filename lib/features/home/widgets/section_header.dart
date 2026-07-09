@@ -9,13 +9,15 @@ class SectionHeader extends StatelessWidget {
   final bool isMobile;
   final String? sectionNumber;
   final String? sectionTitle;
+  final bool isContactSection;
 
   const SectionHeader({
     super.key,
     required this.ratio,
     this.isMobile = false,
     this.sectionNumber,
-    this.sectionTitle
+    this.sectionTitle,
+    this.isContactSection = false,
   });
 
   @override
@@ -23,7 +25,7 @@ class SectionHeader extends StatelessWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: .start,
+      crossAxisAlignment: isContactSection ? .center : .start,
       children: [
         Text(
           sectionNumber ?? AppStrings.aboutMe,
