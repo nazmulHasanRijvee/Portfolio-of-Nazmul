@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
-import 'package:flutter7_portfolio/features/nav_bar/widgets/resume_button.dart';
 
+import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -9,6 +8,7 @@ import '../../../core/extensions/media_query_extension.dart';
 import '../../../core/utils/url_launcher.dart';
 import '../../../data/models/nav_bar_model.dart';
 import 'nav_link.dart';
+import 'resume_button.dart';
 
 class DesktopNavBar extends StatefulWidget {
 
