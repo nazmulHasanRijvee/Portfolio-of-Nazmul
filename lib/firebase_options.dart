@@ -61,4 +61,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'nazmul-portfolio-97b7e.firebasestorage.app',
     measurementId: 'G-VLTHHLJ376',
   );
+
 }

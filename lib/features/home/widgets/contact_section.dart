@@ -6,6 +6,7 @@ import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/utils/url_launcher.dart';
 import '../../../data/models/contact_section_model.dart';
+import '../../../data/services/firebase_analytics_service.dart';
 import 'section_header.dart';
 
 class ContactSection extends StatefulWidget {
@@ -342,11 +343,30 @@ class _ContactSectionState extends State<ContactSection> with TickerProviderStat
           _currentIndex.value = 4;
         },
         child: InkWell(
-            onTap: () => UrlLauncher.openContacts(index), // url launcher
+            onTap: () {
+              UrlLauncher.openContacts(index);
+              final name = socialLinkName(index);
+              final analytics = AnalyticsService();
+              analytics.logSocialLink(name);
+              }, // url launcher
             child: child
         )
     );
 
+  }
+
+  // helper method to get the social links name for mouseRegionForContacts()
+  String socialLinkName(int index) {
+    switch(index) {
+      case 0:
+        return AppStrings.gitHub;
+      case 1:
+        return AppStrings.linkedin;
+      case 2:
+        return AppStrings.email;
+      default:
+        return "Unknown";
+    }
   }
 
   // build contact info containers for buildGrid() and buildListForMobile()

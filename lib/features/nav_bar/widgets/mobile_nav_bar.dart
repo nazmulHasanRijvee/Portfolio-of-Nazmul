@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
-import 'package:flutter7_portfolio/core/constants/app_strings.dart';
 
+import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/extensions/media_query_extension.dart';
 import '../../../core/utils/url_launcher.dart';
+import '../../../data/services/firebase_analytics_service.dart';
 
 class MobileNavBar extends StatefulWidget {
 
-  final ValueChanged<GlobalKey> onNavTap;
+  final Function(GlobalKey, String) onNavTap;
   final Map<String, GlobalKey> keys;
 
 
@@ -74,6 +75,8 @@ class _MobileNavBarState extends State<MobileNavBar> {
   void openResume() {
     // debugPrint('Resume button pressed ${context.sizeOf.width}');
     UrlLauncher.openResume();
+    final analytics = AnalyticsService();
+    analytics.logResumeClicked();
   }
 
 

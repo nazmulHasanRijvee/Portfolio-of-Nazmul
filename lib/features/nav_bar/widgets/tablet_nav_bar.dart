@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
-import 'package:flutter7_portfolio/core/utils/url_launcher.dart';
 
+import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/extensions/media_query_extension.dart';
 import '../../../data/models/nav_bar_model.dart';
 import 'nav_link.dart';
+import 'resume_button.dart';
 
 class TabletNavBar extends StatefulWidget {
 
-  final ValueChanged<GlobalKey> onNavTap;
+  final Function(GlobalKey, String) onNavTap;
   final Map<String, GlobalKey> keys;
 
 
@@ -73,20 +73,10 @@ class _TabletNavBarState extends State<TabletNavBar> {
           const Spacer(),
 
           // Resume button
-          FilledButton(
-            onPressed: openResume,
-            style: FilledButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 10 * ratio, horizontal: 10 * ratio),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              backgroundColor: AppColors.filledButtonColor,
-            ),
-            child: Text(
-              AppStrings.downloadResume,
-              style: AppTextStyles.resumeButton.copyWith(fontSize: 16 * (ratio / 1.1)) /// needs work nav items are much larger
-            ),
-          ),
+          ResumeButton(
+            ratio: ratio,
+            isTablet: true,
+          )
         ],
       ),
 
@@ -128,14 +118,9 @@ class _TabletNavBarState extends State<TabletNavBar> {
     );
   }
 
-  void openResume() {
-    // debugPrint('Resume button pressed ${context.sizeOf.width}');
-    UrlLauncher.openResume();
-  }
-
   void onNavLinkTap(int index, String navItem){
     _current.value = index;
-    widget.onNavTap(widget.keys[navItem.toLowerCase()]!);
+    widget.onNavTap(widget.keys[navItem.toLowerCase()]!, navItem);
   }
 }
 

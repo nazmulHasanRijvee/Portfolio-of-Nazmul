@@ -12,7 +12,8 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # checkout@v5 is the current major release and is designed for the newer runtime node.js 24
+      - uses: actions/checkout@v5
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.44.2" # our current flutter version for this project
