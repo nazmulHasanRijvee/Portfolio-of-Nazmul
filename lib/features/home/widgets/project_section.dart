@@ -7,6 +7,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/utils/asset_paths.dart';
 import '../../../core/utils/url_launcher.dart';
 import '../../../data/models/project_section_model.dart';
+import '../../../data/services/firebase_analytics_service.dart';
 import 'section_header.dart';
 
 class ProjectSection extends StatefulWidget {
@@ -22,6 +23,7 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
   late final List<AnimationController> _animationControllers;
   late final List<Animation<double>> _animations;
 
+  late final AnalyticsService analytics;
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
             .animate(CurvedAnimation(parent: e, curve: Curves.easeIn))
     ).toList();
 
+    analytics = AnalyticsService();
 
   }
 
@@ -239,7 +242,10 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
           buildProjectOneTags(ratio, isTablet),
           SizedBox(height: 35 * ratio),
           FilledButton(
-            onPressed: () => UrlLauncher.openLLMApp(),
+            onPressed: () {
+              UrlLauncher.openLLMApp();
+              analytics.logProjectClicked('LLM App');
+              },
             style: FilledButton.styleFrom(
               padding: .symmetric(horizontal: 48 * ratio, vertical: 16 * ratio),
               backgroundColor: AppColors.primaryColor,
@@ -306,10 +312,28 @@ class _ProjectSectionState extends State<ProjectSection> with TickerProviderStat
         _animationControllers[index].reverse();
       },
       child: InkWell(
-        onTap: () => UrlLauncher.openSubproject(index),
+        onTap: () {
+          UrlLauncher.openSubproject(index);
+          final name = projectName(index);
+          analytics.logProjectClicked(name);
+          },
         child: child
       ),
     );
+  }
+
+  // helper method for getting project name from index
+  String projectName(int index) {
+    switch(index) {
+      case 0:
+        return 'Local Event Finder';
+      case 1:
+        return 'Task Manager';
+      case 2:
+        return 'Crafty Bay';
+      default:
+        return 'Unknown';
+    }
   }
 
 
