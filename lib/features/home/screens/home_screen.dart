@@ -59,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _projectsKey = GlobalKey();
     _contactKey = GlobalKey();
     analytics = AnalyticsService();
+    analytics.logStartup(); // to kick start the connection to Google Analytics
   }
 
   @override

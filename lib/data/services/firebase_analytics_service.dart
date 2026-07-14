@@ -4,6 +4,13 @@ class AnalyticsService {
 
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
+
+  Future<void> logStartup() async {
+    await _analytics.logEvent(
+      name: 'app_opened',
+    );
+  }
+
   Future<void> logSectionViewed(String sectionName) async {
 
     await _analytics.logEvent(
