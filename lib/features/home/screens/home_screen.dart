@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_breakpoints.dart';
 import '../../../core/extensions/media_query_extension.dart';
+import '../../../data/services/firebase_analytics_service.dart';
 import '../../nav_bar/screens/nav_bar.dart';
 import '../widgets/about_section.dart';
 import '../widgets/background.dart';
@@ -26,11 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
   late final GlobalKey _projectsKey;
   late final GlobalKey _contactKey;
 
+  // Firebase Analytics Service
+  late final AnalyticsService analytics;
+
   // Step 2: ScrollController for the page
   final ScrollController _scrollController = ScrollController();
 
   // Step 3: The scroll function — this is what NavBar calls
-  void _scrollToSection(GlobalKey key) {
+  void _scrollToSection(GlobalKey key, String sectionName) {
     final context = key.currentContext;  // finds the widget in the tree
     if (context == null) return;         // guard — if widget not built yet
 
@@ -40,6 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
       curve: Curves.easeInOut,
       alignment: 0.0, // 0.0 = top of viewport, 0.5 = center
     );
+
+    // log which section is viewed
+    analytics.logSectionViewed(sectionName);
+
   }
 
   @override
@@ -50,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _skillsKey = GlobalKey();
     _projectsKey = GlobalKey();
     _contactKey = GlobalKey();
+    analytics = AnalyticsService();
   }
 
   @override
@@ -104,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     HeroSection(
                         key: _heroKey,
-                        onPressed: () => _scrollToSection(_projectsKey),
+                        onPressed: () => _scrollToSection(_projectsKey, 'Projects'),
                     ),
 
                     const SizedBox(height: 150),
@@ -136,4 +145,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
   }
+
 }

@@ -41,4 +41,9 @@ class AppStrings {
   static const String contactSectionHeading = 'Lets build something remarkable';
   static const String lastTitle = 'NazmulDev';
   static const String lastDescription = 'ⓒ 2026 MD Nazmul Hasan  •  Built with Flutter Web';
+
+  // parameters for social links custom event logging
+  static const String gitHub = 'GitHub';
+  static const String linkedin = 'Linkedin';
+  static const String email = "Gmail";
 }

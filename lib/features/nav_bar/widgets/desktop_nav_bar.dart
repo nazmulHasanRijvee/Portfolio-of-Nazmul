@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter7_portfolio/core/constants/app_breakpoints.dart';
+import 'package:flutter7_portfolio/features/nav_bar/widgets/resume_button.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
@@ -11,7 +12,7 @@ import 'nav_link.dart';
 
 class DesktopNavBar extends StatefulWidget {
 
-  final ValueChanged<GlobalKey> onNavTap;
+  final Function(GlobalKey, String) onNavTap;
   final Map<String, GlobalKey> keys;
 
 
@@ -24,7 +25,6 @@ class DesktopNavBar extends StatefulWidget {
 class _DesktopNavBarState extends State<DesktopNavBar> {
 
   late final ValueNotifier<int> _current;
-
 
   @override
   void initState() {
@@ -73,19 +73,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
           const Spacer(),
 
           // Resume button
-          FilledButton(
-            onPressed: openResume,
-            style: FilledButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              backgroundColor: AppColors.filledButtonColor,
-            ),
-            child: Text(
-                AppStrings.downloadResume,
-              style: AppTextStyles.resumeButton,
-            ),
-          ),
+          const ResumeButton()
         ],
       ),
 
@@ -138,7 +126,7 @@ class _DesktopNavBarState extends State<DesktopNavBar> {
 
   void onNavLinkTap(int index, String navItem){
     _current.value = index;
-    widget.onNavTap(widget.keys[navItem.toLowerCase()]!);
+    widget.onNavTap(widget.keys[navItem.toLowerCase()]!, navItem);
   }
 
 }

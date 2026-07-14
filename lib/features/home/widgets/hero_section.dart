@@ -7,6 +7,7 @@ import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/utils/asset_paths.dart';
 import '../../../core/utils/url_launcher.dart';
+import '../../../data/services/firebase_analytics_service.dart';
 
 class HeroSection extends StatefulWidget {
 
@@ -30,6 +31,9 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
   // Controller to show available for hires green dot, fade animation
   late final AnimationController _fadeController;
   late final Animation<double> _fadeAnimation;
+
+  // Firebase Analytics Service
+  late final AnalyticsService analytics;
 
   @override
   void initState() {
@@ -65,6 +69,8 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     for(final c in _controllers){
      c.repeat(reverse: true);
     }
+
+    analytics = AnalyticsService();
 
   }
 
@@ -307,7 +313,7 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
         ),
         SizedBox(width: 20 * ratio),
         OutlinedButton(
-          onPressed: () => UrlLauncher.openGitHub(),
+          onPressed: openGitHub,
           style: OutlinedButton.styleFrom(
               padding: .symmetric(horizontal: 40 * ratio, vertical: 15 * ratio),
               backgroundColor: Colors.transparent,
@@ -326,6 +332,12 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     );
   }
 
+  // Helper method for opening GitHub for buildButtons() and buildIconButtons()
+  void openGitHub() {
+    UrlLauncher.openGitHub();
+    analytics.logSocialLink(AppStrings.gitHub);
+  }
+
   // build icon buttons for buildTextContent
   Row buildIconButtons(double ratio) {
     return Row(
@@ -334,19 +346,25 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
         buildIconButton(
             ratio,
             Icons.code_rounded,
-                () => UrlLauncher.openGitHub()
+            openGitHub
         ),
 
         buildIconButton(
             ratio,
             Icons.link_rounded,
-                () => UrlLauncher.openLinkedin()
+            () {
+              UrlLauncher.openLinkedin();
+              analytics.logSocialLink(AppStrings.linkedin);
+            }
         ),
 
         buildIconButton(
             ratio,
             Icons.mail_outline_rounded,
-                () => UrlLauncher.openMail()
+            () {
+              UrlLauncher.openMail();
+              analytics.logSocialLink(AppStrings.email);
+            }
         ),
       ],
     );

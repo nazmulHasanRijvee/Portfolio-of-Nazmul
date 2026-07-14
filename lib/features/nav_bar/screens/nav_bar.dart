@@ -8,7 +8,7 @@ import '../widgets/tablet_nav_bar.dart';
 class NavBar extends StatelessWidget {
 
   // State hoisting, defining callbacks to control logic in home screen
-  final ValueChanged<GlobalKey> onPressed;
+  final Function(GlobalKey, String) onPressed;
   final Map<String, GlobalKey> keys;
 
   const NavBar({
